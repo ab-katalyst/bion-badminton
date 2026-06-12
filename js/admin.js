@@ -628,11 +628,15 @@
     if (m.status === 'live') statusBadge = '<span class="badge badge-live">Live</span>';
     if (m.status === 'completed') statusBadge = '<span class="badge badge-completed">Completed</span>';
 
+    const needsSemiResult = m.stage === 'final' && (!m.team1Id || !m.team2Id);
+    const semiNote = needsSemiResult ? '<div style="font-size:0.8rem;color:var(--accent);margin-top:4px">⏳ Waiting for semi-final results</div>' : '';
+
     return `
       <div class="card" data-score-id="${m.id}" style="margin-bottom:12px">
         <div class="card-header">
           <div>
             <div class="card-title">${escapeHtml(t1?.name || '?')} vs ${escapeHtml(t2?.name || '?')}</div>
+            ${semiNote}
             <div class="card-meta">Court ${m.court || '?'} · ${m.scheduledTime || 'TBD'}</div>
           </div>
           ${statusBadge}
@@ -695,6 +699,16 @@
 
     match.scores = scores;
     match.status = newStatus;
+
+    // If a semi-final was just completed, proactively update the Final match
+    if (match.stage === 'semi' && newStatus === 'completed') {
+      const winnerId = matchWinner(match);
+      const finalMatch = state.matches.find(m => m.stage === 'final');
+      if (finalMatch && winnerId) {
+        if (match.slot === 'sf1') finalMatch.team1Id = winnerId;
+        if (match.slot === 'sf2') finalMatch.team2Id = winnerId;
+      }
+    }
 
     renderScoresTab();
     saveData();
