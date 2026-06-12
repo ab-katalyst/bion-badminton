@@ -16,9 +16,36 @@
   let scoresGroupFilter = ''; // '' = all groups, or 'A', 'B', etc.
   let showCompleted = false; // completed matches collapsed by default
 
+  const COOKIE_NAME = 'bion_admin_auth';
+  const COOKIE_MAX_AGE = 3 * 60 * 60; // 3 hours in seconds
+
+  function setAdminCookie() {
+    const expires = new Date(Date.now() + COOKIE_MAX_AGE * 1000).toUTCString();
+    document.cookie = `${COOKIE_NAME}=1; expires=${expires}; path=/; SameSite=Strict`;
+  }
+
+  function checkAdminCookie() {
+    return document.cookie.split(';').some(c => c.trim().startsWith(`${COOKIE_NAME}=`));
+  }
+
+  function showAdminPanel() {
+    isLoggedIn = true;
+    document.getElementById('login-screen').classList.add('hidden');
+    document.getElementById('admin-panel').classList.remove('hidden');
+    loadData().then(() => {
+      setupTabs();
+      renderAll();
+    });
+  }
+
   // ===== Init =====
   function init() {
-    // Login screen is visible by default; admin panel is hidden
+    // Auto-login if cookie exists (within 3h)
+    if (checkAdminCookie()) {
+      showAdminPanel();
+      return;
+    }
+
     document.getElementById('login-btn').addEventListener('click', doLogin);
     document.getElementById('admin-password').addEventListener('keydown', e => {
       if (e.key === 'Enter') doLogin();
@@ -28,13 +55,8 @@
   function doLogin() {
     const pw = document.getElementById('admin-password').value;
     if (pw === CONFIG.ADMIN_PASSWORD) {
-      isLoggedIn = true;
-      document.getElementById('login-screen').classList.add('hidden');
-      document.getElementById('admin-panel').classList.remove('hidden');
-      loadData().then(() => {
-        setupTabs();
-        renderAll();
-      });
+      setAdminCookie();
+      showAdminPanel();
     } else {
       showToast('Wrong password', 'error');
     }
