@@ -253,7 +253,8 @@
       return;
     }
 
-    container.innerHTML = live.map(m => renderMatchCard(m, true)).join('');
+    const resolved = getKnockoutTeams();
+    container.innerHTML = live.map(m => renderMatchCard(resolveKnockoutMatch(m, resolved), true)).join('');
   }
 
   function renderStandings() {
@@ -382,7 +383,8 @@
     if (scheduleStage === 'semi') matchesToShow = semiMatches;
     if (scheduleStage === 'final') matchesToShow = finalMatches;
 
-    html += matchesToShow.map(m => renderMatchCard(m, false)).join('');
+    const resolved = getKnockoutTeams();
+    html += matchesToShow.map(m => renderMatchCard(resolveKnockoutMatch(m, resolved), false)).join('');
 
     container.innerHTML = html;
 
