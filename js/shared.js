@@ -89,10 +89,10 @@
 
         if (g1w > g2w) {
           s1.w++; s1.pts += 2;
-          s2.l++; s2.pts += 1;
+          s2.l++; s2.pts += 0;
         } else {
           s2.w++; s2.pts += 2;
-          s1.l++; s1.pts += 1;
+          s1.l++; s1.pts += 0;
         }
       });
 
