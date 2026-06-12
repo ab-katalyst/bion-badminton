@@ -437,12 +437,10 @@
         <div class="match-teams">
           <div class="team-block ${winner === m.team1Id ? 'winner' : winner === m.team2Id ? 'loser' : ''}">
             <div class="team-name">${escapeHtml(t1.name)}</div>
-            <div class="team-players">${escapeHtml(t1.players || '')}</div>
           </div>
           <div class="vs">VS</div>
           <div class="team-block ${winner === m.team2Id ? 'winner' : winner === m.team1Id ? 'loser' : ''}">
             <div class="team-name">${escapeHtml(t2.name)}</div>
-            <div class="team-players">${escapeHtml(t2.players || '')}</div>
           </div>
         </div>
         ${renderScores(m)}
