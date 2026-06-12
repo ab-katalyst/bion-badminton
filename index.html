@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bion Badminton Tournament</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="header">
+    <h1>🏸 Bion Badminton Tournament</h1>
+    <div class="subtitle">Live Scores · Standings · Schedule</div>
+    <div class="last-updated" id="last-updated">Loading...</div>
+    <nav class="nav">
+      <button class="nav-btn active" data-view="live">🔴 Live</button>
+      <button class="nav-btn" data-view="standings">📊 Standings</button>
+      <button class="nav-btn" data-view="schedule">📅 Schedule</button>
+      <button class="nav-btn" data-view="bracket">🏆 Bracket</button>
+    </nav>
+  </header>
+
+  <main class="container">
+    <!-- LIVE VIEW -->
+    <div id="view-live" class="section active">
+      <div class="section-title">Current Matches</div>
+      <div id="live-matches">
+        <div class="empty">
+          <div class="empty-icon">🏸</div>
+          <p>Loading tournament data...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- STANDINGS VIEW -->
+    <div id="view-standings" class="section">
+      <div class="section-title">Group Standings</div>
+      <div id="standings-content">
+        <div class="empty"><div class="empty-icon">📊</div><p>Loading...</p></div>
+      </div>
+    </div>
+
+    <!-- SCHEDULE VIEW -->
+    <div id="view-schedule" class="section">
+      <div class="section-title">All Matches</div>
+      <div id="schedule-content">
+        <div class="empty"><div class="empty-icon">📅</div><p>Loading...</p></div>
+      </div>
+    </div>
+
+    <!-- BRACKET VIEW -->
+    <div id="view-bracket" class="section">
+      <div class="section-title">Knockout Bracket</div>
+      <div id="bracket-content">
+        <div class="empty"><div class="empty-icon">🏆</div><p>Loading...</p></div>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/config.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

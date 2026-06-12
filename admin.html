@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin · Bion Badminton Tournament</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- LOGIN SCREEN -->
+  <div id="login-screen" class="container">
+    <div class="login-box">
+      <h2>🔐 Admin Login</h2>
+      <input type="password" id="admin-password" placeholder="Enter admin password" autocomplete="off">
+      <button class="btn btn-primary" id="login-btn">Log In</button>
+      <p class="mt-3" style="font-size:0.8rem;color:var(--text-secondary)">
+        <a href="index.html">← Back to Scoreboard</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- ADMIN PANEL -->
+  <div id="admin-panel" class="hidden">
+    <header class="header admin-header">
+      <h1>🛠️ Tournament Admin</h1>
+      <div class="subtitle">Manage teams, matches, and scores</div>
+      <nav class="nav">
+        <button class="nav-btn active" data-tab="teams">👥 Teams</button>
+        <button class="nav-btn" data-tab="matches">📅 Matches</button>
+        <button class="nav-btn" data-tab="scores">🏸 Scores</button>
+        <button class="nav-btn" data-tab="config">⚙️ Config</button>
+      </nav>
+    </header>
+
+    <main class="container">
+
+      <!-- TEAMS TAB -->
+      <div id="tab-teams">
+        <div class="card">
+          <div class="admin-section-title">Add Team</div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Team Name *</label>
+              <input type="text" id="team-name" placeholder="e.g. Smash Masters">
+            </div>
+            <div class="form-group">
+              <label>Group</label>
+              <select id="team-group">
+                <option value="A">Group A</option>
+                <option value="B">Group B</option>
+                <option value="C">Group C</option>
+                <option value="D">Group D</option>
+              </select>
+            </div>
+            <div class="form-group full-width">
+              <label>Players (optional)</label>
+              <input type="text" id="team-players" placeholder="e.g. Alice & Bob">
+            </div>
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-primary" id="add-team-btn">Add Team</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="admin-section-title">All Teams</div>
+          <div id="teams-list">
+            <p class="text-center" style="color:var(--text-secondary);padding:20px">Loading...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- MATCHES TAB -->
+      <div id="tab-matches" class="hidden">
+        <div class="card">
+          <div class="admin-section-title">Add Match</div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Match Type</label>
+              <select id="match-stage">
+                <option value="group">Group Stage</option>
+                <option value="semi">Semi-Final</option>
+                <option value="final">Final</option>
+                <option value="third">3rd Place</option>
+              </select>
+            </div>
+            <div class="form-group" id="match-group-wrap">
+              <label>Group</label>
+              <select id="match-group">
+                <option value="A">Group A</option>
+                <option value="B">Group B</option>
+                <option value="C">Group C</option>
+                <option value="D">Group D</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Team 1</label>
+              <select id="match-team1"><option value="">-- Select Team --</option></select>
+            </div>
+            <div class="form-group">
+              <label>Team 2</label>
+              <select id="match-team2"><option value="">-- Select Team --</option></select>
+            </div>
+            <div class="form-group">
+              <label>Time (optional)</label>
+              <input type="text" id="match-time" placeholder="e.g. 10:30">
+            </div>
+            <div class="form-group">
+              <label>Court (optional)</label>
+              <input type="text" id="match-court" placeholder="e.g. 1">
+            </div>
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-primary" id="add-match-btn">Add Match</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="admin-section-title">Quick Actions</div>
+          <div class="btn-row">
+            <button class="btn btn-accent" id="generate-rr-btn">🔄 Generate Round Robin</button>
+            <button class="btn btn-primary" id="setup-knockout-btn">🏆 Setup Knockout Stage</button>
+          </div>
+          <p class="mt-2" style="font-size:0.8rem;color:var(--text-secondary)">
+            Round Robin creates all group matches automatically. Setup Knockout creates Semi-Finals and Final based on current standings.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="admin-section-title">All Matches</div>
+          <div id="matches-list">
+            <p class="text-center" style="color:var(--text-secondary);padding:20px">Loading...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCORES TAB -->
+      <div id="tab-scores" class="hidden">
+        <div class="card">
+          <div class="admin-section-title">Score Matches</div>
+          <div id="scores-list">
+            <p class="text-center" style="color:var(--text-secondary);padding:20px">Loading...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONFIG TAB -->
+      <div id="tab-config" class="hidden">
+        <div class="card">
+          <div class="admin-section-title">Tournament Settings</div>
+          <div class="form-grid">
+            <div class="form-group full-width">
+              <label>Tournament Name</label>
+              <input type="text" id="config-name">
+            </div>
+            <div class="form-group">
+              <label>Group Stage Game Points</label>
+              <input type="number" id="config-group-pts" min="1" value="15">
+            </div>
+            <div class="form-group">
+              <label>Knockout Game Points</label>
+              <input type="number" id="config-ko-pts" min="1" value="21">
+            </div>
+            <div class="form-group">
+              <label>Teams to Advance per Group</label>
+              <input type="number" id="config-advance" min="1" value="2">
+            </div>
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-primary" id="save-config-btn">Save Settings</button>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>
