@@ -398,9 +398,12 @@
 
     // Resolve top teams from each group
     const standings = {};
+    let incompleteGroups = [];
+
     groups.forEach(g => {
       const teamsInGroup = state.teams.filter(t => t.group === g);
       const matchesInGroup = state.matches.filter(m => m.stage === 'group' && m.group === g && m.status === 'completed');
+      const allMatchesInGroup = state.matches.filter(m => m.stage === 'group' && m.group === g);
       const stats = {};
       teamsInGroup.forEach(t => {
         stats[t.id] = { team: t, mp: 0, w: 0, l: 0, gw: 0, gl: 0, pts: 0 };
@@ -424,7 +427,26 @@
         return b.gw - a.gw;
       });
       standings[g] = rows;
+
+      // Check if enough matches are completed to determine top 2
+      if (matchesInGroup.length < allMatchesInGroup.length) {
+        incompleteGroups.push(g);
+      }
+      // Check for ties in top adv positions
+      if (rows.length >= adv) {
+        const cutoff = rows[adv - 1].pts;
+        const tied = rows.filter(r => r.pts === cutoff).length;
+        if (tied > 1) {
+          incompleteGroups.push(`${g} (tie for ${adv}nd place)`);
+        }
+      }
     });
+
+    if (incompleteGroups.length > 0) {
+      const msg = incompleteGroups.map(g => `Group ${g}`).join(', ');
+      showToast(`Cannot setup: ${msg} — complete all group matches first`, 'error');
+      return;
+    }
 
     // Create/update semi-finals
     const sf1 = state.matches.find(m => m.stage === 'semi' && m.slot === 'sf1');
@@ -448,13 +470,7 @@
       state.matches.push({ id: genId('m'), stage: 'final', group: '', team1Id: '', team2Id: '', scores: [[0,0],[0,0],[0,0]], status: 'scheduled', scheduledTime: '', court: '', slot: 'final' });
     }
 
-    // Create 3rd place placeholder
-    const third = state.matches.find(m => m.stage === 'third');
-    if (!third) {
-      state.matches.push({ id: genId('m'), stage: 'third', group: '', team1Id: '', team2Id: '', scores: [[0,0],[0,0],[0,0]], status: 'scheduled', scheduledTime: '', court: '', slot: 'third' });
-    }
-
-    showToast('Knockout stage created/updated', 'success');
+    showToast('Knockout stage created! Semi-Finals and Final are ready.', 'success');
     renderMatchesTab();
     renderScoresTab();
     saveData();
