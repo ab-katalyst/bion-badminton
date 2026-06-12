@@ -426,10 +426,12 @@
         incompleteGroups.push(g);
       }
       // Check for ties in top adv positions
-      if (rows.length >= adv) {
-        const cutoff = rows[adv - 1].pts;
-        const tied = rows.filter(r => r.pts === cutoff).length;
-        if (tied > 1) {
+      if (rows.length > adv) {
+        const cutoff = rows[adv - 1];
+        const next = rows[adv];
+        // A tie only exists if the team just below the cutoff has identical stats
+        // (same pts, gd, gw) — meaning the sort could not break them apart.
+        if (next && next.pts === cutoff.pts && next.gd === cutoff.gd && next.gw === cutoff.gw) {
           incompleteGroups.push(`${g} (tie for ${adv}nd place)`);
         }
       }
