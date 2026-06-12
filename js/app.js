@@ -272,9 +272,6 @@
                   <th style="text-align:center">MP</th>
                   <th style="text-align:center">W</th>
                   <th style="text-align:center">L</th>
-                  <th style="text-align:center">GW</th>
-                  <th style="text-align:center">GL</th>
-                  <th style="text-align:center">GD</th>
                   <th style="text-align:center">Pts</th>
                 </tr>
               </thead>
@@ -288,9 +285,6 @@
                     <td style="text-align:center">${r.mp}</td>
                     <td style="text-align:center">${r.w}</td>
                     <td style="text-align:center">${r.l}</td>
-                    <td style="text-align:center">${r.gw}</td>
-                    <td style="text-align:center">${r.gl}</td>
-                    <td style="text-align:center;font-weight:600;${r.gd > 0 ? 'color:var(--win)' : r.gd < 0 ? 'color:var(--loss)' : ''}">${r.gd > 0 ? '+' : ''}${r.gd}</td>
                     <td style="text-align:center;font-weight:700">${r.pts}</td>
                   </tr>
                 `).join('')}
