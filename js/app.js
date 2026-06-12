@@ -13,14 +13,13 @@
   };
   let pollInterval = null;
   let lastSavedAt = null;
-  let scheduleStage = 'group'; // active sub-tab in schedule: group | semi | final
+  let matchesStage = 'group'; // active sub-tab in matches: group | semi | final
 
   // ===== DOM refs =====
   const views = {
     live: document.getElementById('view-live'),
-    results: document.getElementById('view-results'),
     standings: document.getElementById('view-standings'),
-    schedule: document.getElementById('view-schedule')
+    matches: document.getElementById('view-matches')
   };
 
   // ===== Init =====
@@ -235,9 +234,8 @@
   function renderView(view) {
     switch (view) {
       case 'live': renderLive(); break;
-      case 'results': renderResults(); break;
       case 'standings': renderStandings(); break;
-      case 'schedule': renderSchedule(); break;
+      case 'matches': renderMatches(); break;
     }
   }
 
@@ -365,81 +363,65 @@
     container.innerHTML = knockoutHtml + groupsHtml;
   }
 
-  function renderSchedule() {
-    const container = document.getElementById('schedule-content');
+  function renderMatches() {
+    const container = document.getElementById('matches-content');
 
     if (state.matches.length === 0) {
       container.innerHTML = `<div class="empty"><div class="empty-icon">📅</div><p>No matches scheduled yet.</p></div>`;
       return;
     }
 
-    const groupMatches = state.matches.filter(m => m.stage === 'group' && m.status !== 'completed').sort((a, b) => {
-      const order = { live: 0, scheduled: 1 };
+    const groupMatches = state.matches.filter(m => m.stage === 'group').sort((a, b) => {
+      const order = { live: 0, scheduled: 1, completed: 2 };
       if (order[a.status] !== order[b.status]) return order[a.status] - order[b.status];
       return (a.scheduledTime || '').localeCompare(b.scheduledTime || '');
     });
-    const semiMatches = state.matches.filter(m => m.stage === 'semi' && m.status !== 'completed').sort((a, b) => (a.slot || '').localeCompare(b.slot || ''));
-    const finalMatches = state.matches.filter(m => m.stage === 'final' && m.status !== 'completed');
+    const semiMatches = state.matches.filter(m => m.stage === 'semi').sort((a, b) => {
+      const order = { live: 0, scheduled: 1, completed: 2 };
+      if (order[a.status] !== order[b.status]) return order[a.status] - order[b.status];
+      return (a.slot || '').localeCompare(b.slot || '');
+    });
+    const finalMatches = state.matches.filter(m => m.stage === 'final').sort((a, b) => {
+      const order = { live: 0, scheduled: 1, completed: 2 };
+      if (order[a.status] !== order[b.status]) return order[a.status] - order[b.status];
+      return 0;
+    });
 
     // Default to most advanced stage that has matches
-    if (scheduleStage === 'final' && finalMatches.length === 0) scheduleStage = semiMatches.length > 0 ? 'semi' : 'group';
-    if (scheduleStage === 'semi' && semiMatches.length === 0) scheduleStage = 'group';
+    if (matchesStage === 'final' && finalMatches.length === 0) matchesStage = semiMatches.length > 0 ? 'semi' : 'group';
+    if (matchesStage === 'semi' && semiMatches.length === 0) matchesStage = 'group';
 
     let html = '';
 
     // Stage pills
     html += '<div class="sub-nav" style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">';
     if (groupMatches.length > 0) {
-      html += `<button class="btn btn-sm ${scheduleStage === 'group' ? 'btn-primary' : ''}" data-schedule-stage="group">Group Stage (${groupMatches.length})</button>`;
+      html += `<button class="btn btn-sm ${matchesStage === 'group' ? 'btn-primary' : ''}" data-matches-stage="group">Group Stage (${groupMatches.length})</button>`;
     }
     if (semiMatches.length > 0) {
-      html += `<button class="btn btn-sm ${scheduleStage === 'semi' ? 'btn-primary' : ''}" data-schedule-stage="semi">Semi-Finals (${semiMatches.length})</button>`;
+      html += `<button class="btn btn-sm ${matchesStage === 'semi' ? 'btn-primary' : ''}" data-matches-stage="semi">Semi-Finals (${semiMatches.length})</button>`;
     }
     if (finalMatches.length > 0) {
-      html += `<button class="btn btn-sm ${scheduleStage === 'final' ? 'btn-primary' : ''}" data-schedule-stage="final">Final (${finalMatches.length})</button>`;
+      html += `<button class="btn btn-sm ${matchesStage === 'final' ? 'btn-primary' : ''}" data-matches-stage="final">Final (${finalMatches.length})</button>`;
     }
     html += '</div>';
 
     let matchesToShow = [];
-    if (scheduleStage === 'group') matchesToShow = groupMatches;
-    if (scheduleStage === 'semi') matchesToShow = semiMatches;
-    if (scheduleStage === 'final') matchesToShow = finalMatches;
+    if (matchesStage === 'group') matchesToShow = groupMatches;
+    if (matchesStage === 'semi') matchesToShow = semiMatches;
+    if (matchesStage === 'final') matchesToShow = finalMatches;
 
     const resolved = getKnockoutTeams();
     html += matchesToShow.map(m => renderMatchCard(resolveKnockoutMatch(m, resolved), false)).join('');
 
     container.innerHTML = html;
 
-    container.querySelectorAll('[data-schedule-stage]').forEach(btn => {
+    container.querySelectorAll('[data-matches-stage]').forEach(btn => {
       btn.addEventListener('click', () => {
-        scheduleStage = btn.dataset.scheduleStage;
-        renderSchedule();
+        matchesStage = btn.dataset.matchesStage;
+        renderMatches();
       });
     });
-  }
-
-  function renderResults() {
-    const container = document.getElementById('results-content');
-
-    const completed = state.matches.filter(m => m.status === 'completed').sort((a, b) => {
-      // Sort by completion time, newest first
-      const ta = a.completedAt || 0;
-      const tb = b.completedAt || 0;
-      if (ta !== tb) return tb - ta;
-      return (b.scheduledTime || '').localeCompare(a.scheduledTime || '');
-    });
-
-    if (completed.length === 0) {
-      container.innerHTML = `<div class="empty">
-        <div class="empty-icon">🏆</div>
-        <p>No completed matches yet.</p>
-        <p class="mt-2" style="font-size:0.85rem">Check the Schedule tab for upcoming matches.</p>
-      </div>`;
-      return;
-    }
-
-    const resolved = getKnockoutTeams();
-    container.innerHTML = completed.map(m => renderMatchCard(resolveKnockoutMatch(m, resolved), false)).join('');
   }
 
   function renderBracket() {
@@ -516,15 +498,15 @@
       <div class="${cardClass}" data-match-id="${m.id}">
         <div class="card-header">
           <div class="card-meta">${metaText || '&nbsp;'}</div>
-          ${!isLiveView && m.status !== 'completed' ? statusBadge : ''}
+          ${!isLiveView ? statusBadge : ''}
         </div>
         <div class="match-teams">
           <div class="team-block ${winner === m.team1Id ? 'winner' : winner === m.team2Id ? 'loser' : ''}">
-            <div class="team-name">${escapeHtml(t1.name)}</div>
+            <div class="team-name" style="${winner === m.team1Id ? 'font-weight:700' : ''}">${escapeHtml(t1.name)}</div>
           </div>
           <div class="vs">VS</div>
           <div class="team-block ${winner === m.team2Id ? 'winner' : winner === m.team1Id ? 'loser' : ''}">
-            <div class="team-name">${escapeHtml(t2.name)}</div>
+            <div class="team-name" style="${winner === m.team2Id ? 'font-weight:700' : ''}">${escapeHtml(t2.name)}</div>
           </div>
         </div>
         ${renderScores(m)}
