@@ -27,46 +27,20 @@
       <h1><img src="bion-logo.png" alt="Bion" class="header-logo"> Tournament Admin</h1>
       <div class="subtitle">Manage teams, matches, and scores</div>
       <nav class="nav">
-        <button class="nav-btn active" data-tab="teams">👥 Teams</button>
+        <button class="nav-btn active" data-tab="scores">🏸 Scores</button>
         <button class="nav-btn" data-tab="matches">📅 Matches</button>
-        <button class="nav-btn" data-tab="scores">🏸 Scores</button>
+        <button class="nav-btn" data-tab="teams">👥 Teams</button>
         <button class="nav-btn" data-tab="config">⚙️ Config</button>
       </nav>
     </header>
 
     <main class="container">
 
-      <!-- TEAMS TAB -->
-      <div id="tab-teams">
+      <!-- SCORES TAB -->
+      <div id="tab-scores">
         <div class="card">
-          <div class="admin-section-title">Add Team</div>
-          <div class="form-grid">
-            <div class="form-group">
-              <label>Team Name *</label>
-              <input type="text" id="team-name" placeholder="e.g. Smash Masters">
-            </div>
-            <div class="form-group">
-              <label>Group</label>
-              <select id="team-group">
-                <option value="A">Group A</option>
-                <option value="B">Group B</option>
-                <option value="C">Group C</option>
-                <option value="D">Group D</option>
-              </select>
-            </div>
-            <div class="form-group full-width">
-              <label>Players (optional)</label>
-              <input type="text" id="team-players" placeholder="e.g. Alice & Bob">
-            </div>
-          </div>
-          <div class="btn-row">
-            <button class="btn btn-primary" id="add-team-btn">Add Team</button>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="admin-section-title">All Teams</div>
-          <div id="teams-list">
+          <div class="admin-section-title">Score Matches</div>
+          <div id="scores-list">
             <p class="text-center" style="color:var(--text-secondary);padding:20px">Loading...</p>
           </div>
         </div>
@@ -118,6 +92,52 @@
         </div>
 
         <div class="card">
+          <div class="admin-section-title">All Matches</div>
+          <div id="matches-list">
+            <p class="text-center" style="color:var(--text-secondary);padding:20px">Loading...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- TEAMS TAB -->
+      <div id="tab-teams" class="hidden">
+        <div class="card">
+          <div class="admin-section-title">Add Team</div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Team Name *</label>
+              <input type="text" id="team-name" placeholder="e.g. Smash Masters">
+            </div>
+            <div class="form-group">
+              <label>Group</label>
+              <select id="team-group">
+                <option value="A">Group A</option>
+                <option value="B">Group B</option>
+                <option value="C">Group C</option>
+                <option value="D">Group D</option>
+              </select>
+            </div>
+            <div class="form-group full-width">
+              <label>Players (optional)</label>
+              <input type="text" id="team-players" placeholder="e.g. Alice & Bob">
+            </div>
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-primary" id="add-team-btn">Add Team</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="admin-section-title">All Teams</div>
+          <div id="teams-list">
+            <p class="text-center" style="color:var(--text-secondary);padding:20px">No teams yet. Add one above.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONFIG TAB -->
+      <div id="tab-config" class="hidden">
+        <div class="card">
           <div class="admin-section-title">Quick Actions</div>
           <div class="btn-row">
             <button class="btn btn-accent" id="generate-rr-btn">🔄 Generate Round Robin</button>
@@ -128,26 +148,6 @@
           </p>
         </div>
 
-        <div class="card">
-          <div class="admin-section-title">All Matches</div>
-          <div id="matches-list">
-            <p class="text-center" style="color:var(--text-secondary);padding:20px">Loading...</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- SCORES TAB -->
-      <div id="tab-scores" class="hidden">
-        <div class="card">
-          <div class="admin-section-title">Score Matches</div>
-          <div id="scores-list">
-            <p class="text-center" style="color:var(--text-secondary);padding:20px">Loading...</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- CONFIG TAB -->
-      <div id="tab-config" class="hidden">
         <div class="card">
           <div class="admin-section-title">Tournament Settings</div>
           <div class="form-grid">
