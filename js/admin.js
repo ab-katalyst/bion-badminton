@@ -15,13 +15,7 @@
 
   // ===== Init =====
   function init() {
-    const hash = window.location.hash;
-    if (hash === '#admin') {
-      showLogin();
-    } else {
-      showLogin();
-    }
-
+    // Login screen is visible by default; admin panel is hidden
     document.getElementById('login-btn').addEventListener('click', doLogin);
     document.getElementById('admin-password').addEventListener('keydown', e => {
       if (e.key === 'Enter') doLogin();
