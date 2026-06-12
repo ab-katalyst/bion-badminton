@@ -445,61 +445,89 @@
   // ===== SCORES TAB =====
   function renderScoresTab() {
     const container = document.getElementById('scores-list');
-    const matches = [...state.matches].sort((a, b) => {
-      const order = { live: 0, scheduled: 1, completed: 2 };
-      if (order[a.status] !== order[b.status]) return order[a.status] - order[b.status];
-      return (a.scheduledTime || '').localeCompare(b.scheduledTime || '');
-    });
 
-    if (matches.length === 0) {
+    if (state.matches.length === 0) {
       container.innerHTML = '<p class="text-center" style="color:var(--text-secondary);padding:20px">No matches to score.</p>';
       return;
     }
 
-    container.innerHTML = matches.map(m => {
-      const t1 = state.teams.find(t => t.id === m.team1Id);
-      const t2 = state.teams.find(t => t.id === m.team2Id);
-      const stageLabel = m.stage === 'group' ? `Group ${m.group}` : m.stage === 'semi' ? 'Semi-Final' : m.stage === 'final' ? 'Final' : '3rd Place';
-      const scores = m.scores || [[0, 0], [0, 0], [0, 0]];
+    // Group matches by stage
+    const groupMatches = state.matches.filter(m => m.stage === 'group').sort((a, b) => (a.group || '').localeCompare(b.group || '') || (a.scheduledTime || '').localeCompare(b.scheduledTime || ''));
+    const semiMatches = state.matches.filter(m => m.stage === 'semi').sort((a, b) => (a.slot || '').localeCompare(b.slot || ''));
+    const finalMatches = state.matches.filter(m => m.stage === 'final');
 
-      return `
-        <div class="card" data-score-id="${m.id}">
-          <div class="card-header">
-            <div>
-              <div class="card-title">${escapeHtml(t1?.name || '?')} vs ${escapeHtml(t2?.name || '?')}</div>
-              <div class="card-meta">${stageLabel} · Court ${m.court || '?'} · ${m.scheduledTime || 'TBD'}</div>
-            </div>
-            <select class="status-select" data-id="${m.id}" style="padding:6px;border-radius:6px;border:1px solid var(--border);font-size:0.85rem">
-              <option value="scheduled" ${m.status === 'scheduled' ? 'selected' : ''}>Scheduled</option>
-              <option value="live" ${m.status === 'live' ? 'selected' : ''}>Live</option>
-              <option value="completed" ${m.status === 'completed' ? 'selected' : ''}>Completed</option>
-            </select>
-          </div>
-          <div style="display:flex;flex-direction:column;gap:10px">
-            ${[0, 1, 2].map(i => `
-              <div class="score-editor">
-                <div class="score-input-group">
-                  <label>${escapeHtml(t1?.name || 'Team 1')} G${i + 1}</label>
-                  <input type="number" min="0" class="score-t1" data-match="${m.id}" data-game="${i}" value="${scores[i]?.[0] || 0}">
-                </div>
-                <div class="score-input-divider">-</div>
-                <div class="score-input-group">
-                  <label>${escapeHtml(t2?.name || 'Team 2')} G${i + 1}</label>
-                  <input type="number" min="0" class="score-t2" data-match="${m.id}" data-game="${i}" value="${scores[i]?.[1] || 0}">
-                </div>
-              </div>
-            `).join('')}
-          </div>
-          <div class="btn-row" style="justify-content:flex-end">
-            <button class="btn btn-primary btn-sm save-score-btn" data-id="${m.id}">Save Score</button>
-          </div>
-        </div>
-      `;
-    }).join('');
+    let html = '';
+
+    if (groupMatches.length > 0) {
+      html += '<div class="admin-section-title">Group Stage</div>';
+      const byGroup = {};
+      groupMatches.forEach(m => {
+        const g = m.group || 'Other';
+        if (!byGroup[g]) byGroup[g] = [];
+        byGroup[g].push(m);
+      });
+      Object.entries(byGroup).forEach(([g, matches]) => {
+        html += `<div style="font-weight:600;font-size:0.85rem;color:var(--primary);margin-bottom:8px">Group ${g}</div>`;
+        html += matches.map(m => renderScoreCard(m)).join('');
+      });
+    }
+
+    if (semiMatches.length > 0) {
+      html += '<div class="admin-section-title" style="margin-top:16px">Semi-Finals</div>';
+      html += semiMatches.map(m => renderScoreCard(m)).join('');
+    }
+
+    if (finalMatches.length > 0) {
+      html += '<div class="admin-section-title" style="margin-top:16px">Final</div>';
+      html += finalMatches.map(m => renderScoreCard(m)).join('');
+    }
+
+    container.innerHTML = html;
 
     container.querySelectorAll('.save-score-btn').forEach(btn => {
       btn.addEventListener('click', () => saveMatchScore(btn.dataset.id));
     });
+  }
+
+  function renderScoreCard(m) {
+    const t1 = state.teams.find(t => t.id === m.team1Id);
+    const t2 = state.teams.find(t => t.id === m.team2Id);
+    const scores = m.scores || [[0, 0], [0, 0], [0, 0]];
+
+    let statusBadge = '';
+    if (m.status === 'scheduled') statusBadge = '<span class="badge badge-scheduled">Scheduled</span>';
+    if (m.status === 'live') statusBadge = '<span class="badge badge-live">Live</span>';
+    if (m.status === 'completed') statusBadge = '<span class="badge badge-completed">Completed</span>';
+
+    return `
+      <div class="card" data-score-id="${m.id}" style="margin-bottom:12px">
+        <div class="card-header">
+          <div>
+            <div class="card-title">${escapeHtml(t1?.name || '?')} vs ${escapeHtml(t2?.name || '?')}</div>
+            <div class="card-meta">Court ${m.court || '?'} · ${m.scheduledTime || 'TBD'}</div>
+          </div>
+          ${statusBadge}
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          ${[0, 1, 2].map(i => `
+            <div class="score-editor">
+              <div class="score-input-group">
+                <label>${escapeHtml(t1?.name || 'Team 1')} G${i + 1}</label>
+                <input type="number" min="0" class="score-t1" data-match="${m.id}" data-game="${i}" value="${scores[i]?.[0] || 0}">
+              </div>
+              <div class="score-input-divider">-</div>
+              <div class="score-input-group">
+                <label>${escapeHtml(t2?.name || 'Team 2')} G${i + 1}</label>
+                <input type="number" min="0" class="score-t2" data-match="${m.id}" data-game="${i}" value="${scores[i]?.[1] || 0}">
+              </div>
+            </div>
+          `).join('')}
+        </div>
+        <div class="btn-row" style="justify-content:flex-end">
+          <button class="btn btn-primary btn-sm save-score-btn" data-id="${m.id}">Save Score</button>
+        </div>
+      </div>
+    `;
   }
 
   function saveMatchScore(matchId) {
@@ -507,20 +535,38 @@
     if (!match) return;
 
     const card = document.querySelector(`[data-score-id="${matchId}"]`);
-    const status = card.querySelector('.status-select').value;
     const t1Inputs = card.querySelectorAll('.score-t1');
     const t2Inputs = card.querySelectorAll('.score-t2');
 
     const scores = [];
+    let hasNonZero = false;
     for (let i = 0; i < 3; i++) {
       const s1 = parseInt(t1Inputs[i]?.value || 0, 10);
       const s2 = parseInt(t2Inputs[i]?.value || 0, 10);
+      if (s1 > 0 || s2 > 0) hasNonZero = true;
       scores.push([s1, s2]);
     }
 
-    match.scores = scores;
-    match.status = status;
+    const g1w = gamesWon(scores, 1);
+    const g2w = gamesWon(scores, 2);
 
+    let newStatus = match.status;
+    if (g1w >= 2 || g2w >= 2) {
+      newStatus = 'completed';
+      const winnerName = g1w >= 2 ? (state.teams.find(t => t.id === match.team1Id)?.name || 'Team 1') : (state.teams.find(t => t.id === match.team2Id)?.name || 'Team 2');
+      showToast(`Match completed! ${winnerName} won ${Math.max(g1w,g2w)}-${Math.min(g1w,g2w)}`, 'success');
+    } else if (hasNonZero) {
+      newStatus = 'live';
+      showToast('Scores saved — match is live', 'success');
+    } else {
+      newStatus = 'scheduled';
+      showToast('Scores saved', 'success');
+    }
+
+    match.scores = scores;
+    match.status = newStatus;
+
+    renderScoresTab();
     saveData();
   }
 
