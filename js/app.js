@@ -13,6 +13,7 @@
   };
   let pollInterval = null;
   let lastSavedAt = null;
+  let scheduleStage = 'group'; // active sub-tab in schedule: group | semi | final
 
   // ===== DOM refs =====
   const views = {
@@ -334,19 +335,54 @@
 
   function renderSchedule() {
     const container = document.getElementById('schedule-content');
-    const matches = [...state.matches].sort((a, b) => {
-      // Sort: live first, then scheduled by time, then completed last
-      const order = { live: 0, scheduled: 1, completed: 2 };
-      if (order[a.status] !== order[b.status]) return order[a.status] - order[b.status];
-      return (a.scheduledTime || '').localeCompare(b.scheduledTime || '');
-    });
 
-    if (matches.length === 0) {
+    if (state.matches.length === 0) {
       container.innerHTML = `<div class="empty"><div class="empty-icon">📅</div><p>No matches scheduled yet.</p></div>`;
       return;
     }
 
-    container.innerHTML = matches.map(m => renderMatchCard(m, false)).join('');
+    const groupMatches = state.matches.filter(m => m.stage === 'group').sort((a, b) => {
+      const order = { live: 0, scheduled: 1, completed: 2 };
+      if (order[a.status] !== order[b.status]) return order[a.status] - order[b.status];
+      return (a.scheduledTime || '').localeCompare(b.scheduledTime || '');
+    });
+    const semiMatches = state.matches.filter(m => m.stage === 'semi').sort((a, b) => (a.slot || '').localeCompare(b.slot || ''));
+    const finalMatches = state.matches.filter(m => m.stage === 'final');
+
+    // Default to most advanced stage that has matches
+    if (scheduleStage === 'final' && finalMatches.length === 0) scheduleStage = semiMatches.length > 0 ? 'semi' : 'group';
+    if (scheduleStage === 'semi' && semiMatches.length === 0) scheduleStage = 'group';
+
+    let html = '';
+
+    // Stage pills
+    html += '<div class="sub-nav" style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">';
+    if (groupMatches.length > 0) {
+      html += `<button class="btn btn-sm ${scheduleStage === 'group' ? 'btn-primary' : ''}" data-schedule-stage="group">Group Stage (${groupMatches.length})</button>`;
+    }
+    if (semiMatches.length > 0) {
+      html += `<button class="btn btn-sm ${scheduleStage === 'semi' ? 'btn-primary' : ''}" data-schedule-stage="semi">Semi-Finals (${semiMatches.length})</button>`;
+    }
+    if (finalMatches.length > 0) {
+      html += `<button class="btn btn-sm ${scheduleStage === 'final' ? 'btn-primary' : ''}" data-schedule-stage="final">Final (${finalMatches.length})</button>`;
+    }
+    html += '</div>';
+
+    let matchesToShow = [];
+    if (scheduleStage === 'group') matchesToShow = groupMatches;
+    if (scheduleStage === 'semi') matchesToShow = semiMatches;
+    if (scheduleStage === 'final') matchesToShow = finalMatches;
+
+    html += matchesToShow.map(m => renderMatchCard(m, false)).join('');
+
+    container.innerHTML = html;
+
+    container.querySelectorAll('[data-schedule-stage]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        scheduleStage = btn.dataset.scheduleStage;
+        renderSchedule();
+      });
+    });
   }
 
   function renderBracket() {
