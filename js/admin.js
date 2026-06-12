@@ -429,10 +429,18 @@
       if (rows.length > adv) {
         const cutoff = rows[adv - 1];
         const next = rows[adv];
-        // A tie only exists if the team just below the cutoff has identical stats
-        // (same pts, gd, gw) — meaning the sort could not break them apart.
-        if (next && next.pts === cutoff.pts && next.gd === cutoff.gd && next.gw === cutoff.gw) {
-          incompleteGroups.push(`${g} (tie for ${adv}nd place)`);
+        // A tie exists only if the sort could not break them apart.
+        // Head-to-head is checked first; if that didn't resolve it,
+        // we fall back to gd and gw.
+        if (next && next.pts === cutoff.pts) {
+          const h2h = groupMatches.find(m =>
+            (m.team1Id === cutoff.team.id && m.team2Id === next.team.id) ||
+            (m.team1Id === next.team.id && m.team2Id === cutoff.team.id)
+          );
+          const resolvedByH2h = h2h && h2h.status === 'completed';
+          if (!resolvedByH2h && next.gd === cutoff.gd && next.gw === cutoff.gw) {
+            incompleteGroups.push(`${g} (tie for ${adv}nd place)`);
+          }
         }
       }
     });

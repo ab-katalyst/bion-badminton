@@ -101,6 +101,18 @@
 
       rows.sort((a, b) => {
         if (b.pts !== a.pts) return b.pts - a.pts;
+
+        // Head-to-head tie-breaker: who won the direct match between these two teams
+        const h2h = groupMatches.find(m =>
+          (m.team1Id === a.team.id && m.team2Id === b.team.id) ||
+          (m.team1Id === b.team.id && m.team2Id === a.team.id)
+        );
+        if (h2h) {
+          const winner = this.matchWinner(h2h, { groupStagePoints: minPoints });
+          if (winner === a.team.id) return -1;  // a won head-to-head → a first
+          if (winner === b.team.id) return 1;   // b won head-to-head → b first
+        }
+
         if (b.gd !== a.gd) return b.gd - a.gd;
         return b.gw - a.gw;
       });
