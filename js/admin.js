@@ -699,6 +699,9 @@
 
     match.scores = scores;
     match.status = newStatus;
+    if (newStatus === 'completed') {
+      match.completedAt = Date.now();
+    }
 
     // If a semi-final was just completed, proactively update the Final match
     if (match.stage === 'semi' && newStatus === 'completed') {

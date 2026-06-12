@@ -18,6 +18,7 @@
   // ===== DOM refs =====
   const views = {
     live: document.getElementById('view-live'),
+    results: document.getElementById('view-results'),
     standings: document.getElementById('view-standings'),
     schedule: document.getElementById('view-schedule')
   };
@@ -234,6 +235,7 @@
   function renderView(view) {
     switch (view) {
       case 'live': renderLive(); break;
+      case 'results': renderResults(); break;
       case 'standings': renderStandings(); break;
       case 'schedule': renderSchedule(); break;
     }
@@ -241,6 +243,26 @@
 
   function renderLive() {
     const container = document.getElementById('live-matches');
+
+    // Check if tournament is over (final completed)
+    const finalMatch = state.matches.find(m => m.stage === 'final');
+    if (finalMatch && finalMatch.status === 'completed') {
+      const winnerId = matchWinner(finalMatch);
+      const winner = getTeam(winnerId);
+      const runnerUpId = winnerId === finalMatch.team1Id ? finalMatch.team2Id : finalMatch.team1Id;
+      const runnerUp = getTeam(runnerUpId);
+      container.innerHTML = `
+        <div class="card" style="text-align:center;padding:28px;border:2px solid var(--accent);background:linear-gradient(135deg,#fff8e1 0%,#ffffff 100%)">
+          <div style="font-size:2rem;margin-bottom:8px">🏆</div>
+          <div style="font-size:1.1rem;font-weight:700;color:var(--primary-dark)">Tournament Ended!</div>
+          <div style="font-size:0.9rem;color:var(--text-secondary);margin-top:8px">Winner</div>
+          <div style="font-size:1.3rem;font-weight:700;color:var(--accent);margin-top:4px">${escapeHtml(winner.name)}</div>
+          ${runnerUp.name ? `<div style="font-size:0.85rem;color:var(--text-secondary);margin-top:8px">Runner-up: ${escapeHtml(runnerUp.name)}</div>` : ''}
+        </div>
+      `;
+      return;
+    }
+
     const live = state.matches.filter(m => m.status === 'live');
 
     if (live.length === 0) {
@@ -351,13 +373,13 @@
       return;
     }
 
-    const groupMatches = state.matches.filter(m => m.stage === 'group').sort((a, b) => {
-      const order = { live: 0, scheduled: 1, completed: 2 };
+    const groupMatches = state.matches.filter(m => m.stage === 'group' && m.status !== 'completed').sort((a, b) => {
+      const order = { live: 0, scheduled: 1 };
       if (order[a.status] !== order[b.status]) return order[a.status] - order[b.status];
       return (a.scheduledTime || '').localeCompare(b.scheduledTime || '');
     });
-    const semiMatches = state.matches.filter(m => m.stage === 'semi').sort((a, b) => (a.slot || '').localeCompare(b.slot || ''));
-    const finalMatches = state.matches.filter(m => m.stage === 'final');
+    const semiMatches = state.matches.filter(m => m.stage === 'semi' && m.status !== 'completed').sort((a, b) => (a.slot || '').localeCompare(b.slot || ''));
+    const finalMatches = state.matches.filter(m => m.stage === 'final' && m.status !== 'completed');
 
     // Default to most advanced stage that has matches
     if (scheduleStage === 'final' && finalMatches.length === 0) scheduleStage = semiMatches.length > 0 ? 'semi' : 'group';
@@ -394,6 +416,30 @@
         renderSchedule();
       });
     });
+  }
+
+  function renderResults() {
+    const container = document.getElementById('results-content');
+
+    const completed = state.matches.filter(m => m.status === 'completed').sort((a, b) => {
+      // Sort by completion time, newest first
+      const ta = a.completedAt || 0;
+      const tb = b.completedAt || 0;
+      if (ta !== tb) return tb - ta;
+      return (b.scheduledTime || '').localeCompare(a.scheduledTime || '');
+    });
+
+    if (completed.length === 0) {
+      container.innerHTML = `<div class="empty">
+        <div class="empty-icon">🏆</div>
+        <p>No completed matches yet.</p>
+        <p class="mt-2" style="font-size:0.85rem">Check the Schedule tab for upcoming matches.</p>
+      </div>`;
+      return;
+    }
+
+    const resolved = getKnockoutTeams();
+    container.innerHTML = completed.map(m => renderMatchCard(resolveKnockoutMatch(m, resolved), false)).join('');
   }
 
   function renderBracket() {
