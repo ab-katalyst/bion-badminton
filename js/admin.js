@@ -5,6 +5,8 @@
 (function() {
   'use strict';
 
+  const TU = window.TournamentUtils;
+
   let state = {
     teams: [],
     matches: [],
@@ -21,7 +23,8 @@
 
   function setAdminCookie() {
     const expires = new Date(Date.now() + COOKIE_MAX_AGE * 1000).toUTCString();
-    document.cookie = `${COOKIE_NAME}=1; expires=${expires}; path=/; SameSite=Strict`;
+    const secureFlag = window.location.protocol === 'https:' ? '; Secure' : '';
+    document.cookie = `${COOKIE_NAME}=1; expires=${expires}; path=/; SameSite=Strict${secureFlag}`;
   }
 
   function checkAdminCookie() {
@@ -58,7 +61,7 @@
       setAdminCookie();
       showAdminPanel();
     } else {
-      showToast('Wrong password', 'error');
+      TU.showToast('Wrong password', 'error');
     }
   }
 
@@ -89,10 +92,13 @@
       const resp = await fetch(url, { method: 'GET' });
       const data = await resp.json();
       if (data.error) throw new Error(data.error);
+      if (!Array.isArray(data.teams) || !Array.isArray(data.matches)) {
+        throw new Error('Invalid data format from server');
+      }
       state = data;
     } catch (err) {
       console.error('Load error:', err);
-      showToast('Failed to load data from sheet', 'error');
+      TU.showToast('Failed to load data from sheet', 'error');
       // Use defaults if empty
       if (!state.config.tournamentName) {
         state.config = { ...CONFIG.DEFAULTS };
@@ -102,18 +108,18 @@
 
   async function saveData() {
     try {
-      showToast('Saving...', 'success');
+      TU.showToast('Saving...', 'success');
       const resp = await fetch(CONFIG.APPS_SCRIPT_URL, {
         method: 'POST',
         body: JSON.stringify(state)
       });
       const result = await resp.json();
       if (result.error) throw new Error(result.error);
-      showToast('Saved successfully!', 'success');
+      TU.showToast('Saved successfully!', 'success');
       return true;
     } catch (err) {
       console.error('Save error:', err);
-      showToast('Save failed: ' + err.message, 'error');
+      TU.showToast('Save failed: ' + err.message, 'error');
       return false;
     }
   }
@@ -160,12 +166,12 @@
 
       list.innerHTML = Object.entries(byGroup).map(([g, teams]) => `
         <div class="mb-3">
-          <div style="font-weight:700;font-size:0.9rem;color:var(--primary);margin-bottom:6px;text-transform:uppercase">Group ${g}</div>
+          <div style="font-weight:700;font-size:0.9rem;color:var(--primary);margin-bottom:6px;text-transform:uppercase">Group ${TU.escapeHtml(g)}</div>
           ${teams.map(t => `
             <div class="list-item">
               <div class="list-item-info">
-                <div class="list-item-title">${escapeHtml(t.name)}</div>
-                <div class="list-item-meta">${escapeHtml(t.players || '')}</div>
+                <div class="list-item-title">${TU.escapeHtml(t.name)}</div>
+                <div class="list-item-meta">${TU.escapeHtml(t.players || '')}</div>
               </div>
               <button class="btn btn-danger btn-sm" data-action="delete-team" data-id="${t.id}">Delete</button>
             </div>
@@ -205,7 +211,12 @@
     const players = document.getElementById('team-players').value.trim();
 
     if (!name) {
-      showToast('Team name is required', 'error');
+      TU.showToast('Team name is required', 'error');
+      return;
+    }
+
+    if (state.teams.some(t => t.name.toLowerCase() === name.toLowerCase())) {
+      TU.showToast('A team with this name already exists', 'error');
       return;
     }
 
@@ -224,7 +235,7 @@
   });
 
   function deleteTeam(id) {
-    if (!confirm('Delete this team? It will also remove them from any matches.')) return;
+    if (!confirm('Delete this team? This will also delete any matches involving this team.')) return;
     state.teams = state.teams.filter(t => t.id !== id);
     state.matches = state.matches.filter(m => m.team1Id !== id && m.team2Id !== id);
     renderTeamsTab();
@@ -257,11 +268,13 @@
             ${matches.map(m => {
               const t1 = state.teams.find(t => t.id === m.team1Id);
               const t2 = state.teams.find(t => t.id === m.team2Id);
+              const time = m.scheduledTime ? TU.escapeHtml(m.scheduledTime) : '';
+              const court = m.court ? ` · Court ${TU.escapeHtml(m.court)}` : '';
               return `
                 <div class="list-item">
                   <div class="list-item-info">
-                    <div class="list-item-title">${escapeHtml(t1?.name || '?')} vs ${escapeHtml(t2?.name || '?')}</div>
-                    <div class="list-item-meta">${m.scheduledTime || ''}${m.court ? ' · Court ' + m.court : ''} · ${m.status}</div>
+                    <div class="list-item-title">${TU.escapeHtml(t1?.name || '?')} vs ${TU.escapeHtml(t2?.name || '?')}</div>
+                    <div class="list-item-meta">${time}${court} · ${m.status}</div>
                   </div>
                   <button class="btn btn-danger btn-sm" data-action="delete-match" data-id="${m.id}">Delete</button>
                 </div>
@@ -286,7 +299,7 @@
       if (!sel) return;
       const current = sel.value;
       sel.innerHTML = '<option value="">-- Select Team --</option>';
-      state.teams.sort((a, b) => a.name.localeCompare(b.name)).forEach(t => {
+      [...state.teams].sort((a, b) => a.name.localeCompare(b.name)).forEach(t => {
         const opt = document.createElement('option');
         opt.value = t.id;
         opt.textContent = `${t.name} (Group ${t.group || '?'})`;
@@ -311,11 +324,11 @@
     const court = document.getElementById('match-court').value;
 
     if (!team1Id || !team2Id) {
-      showToast('Select both teams', 'error');
+      TU.showToast('Select both teams', 'error');
       return;
     }
     if (team1Id === team2Id) {
-      showToast('Teams must be different', 'error');
+      TU.showToast('Teams must be different', 'error');
       return;
     }
 
@@ -352,7 +365,7 @@
   document.getElementById('generate-rr-btn').addEventListener('click', () => {
     const groups = [...new Set(state.teams.map(t => t.group).filter(Boolean))];
     if (groups.length === 0) {
-      showToast('Add teams to groups first', 'error');
+      TU.showToast('Add teams to groups first', 'error');
       return;
     }
 
@@ -386,7 +399,7 @@
       }
     });
 
-    showToast(`Generated ${added} round-robin matches`, 'success');
+    TU.showToast(`Generated ${added} round-robin matches`, 'success');
     renderMatchesTab();
     renderScoresTab();
     saveData();
@@ -394,39 +407,19 @@
 
   document.getElementById('setup-knockout-btn').addEventListener('click', () => {
     const groups = [...new Set(state.teams.map(t => t.group).filter(Boolean))].sort();
-    const adv = state.config.teamsToAdvance || 2;
+    const adv = state.config.teamsToAdvance ?? 2;
+    const minPts = TU.getMinPoints('group', state.config);
 
     // Resolve top teams from each group
     const standings = {};
     let incompleteGroups = [];
 
     groups.forEach(g => {
-      const teamsInGroup = state.teams.filter(t => t.group === g);
+      const rows = TU.computeStandings(g, state.teams, state.matches, minPts);
+      standings[g] = rows;
+
       const matchesInGroup = state.matches.filter(m => m.stage === 'group' && m.group === g && m.status === 'completed');
       const allMatchesInGroup = state.matches.filter(m => m.stage === 'group' && m.group === g);
-      const stats = {};
-      teamsInGroup.forEach(t => {
-        stats[t.id] = { team: t, mp: 0, w: 0, l: 0, gw: 0, gl: 0, pts: 0 };
-      });
-      matchesInGroup.forEach(m => {
-        if (!stats[m.team1Id] || !stats[m.team2Id]) return;
-        const minPts = getMinPoints('group');
-        const g1w = gamesWon(m.scores, 1, minPts);
-        const g2w = gamesWon(m.scores, 2, minPts);
-        stats[m.team1Id].mp++; stats[m.team2Id].mp++;
-        stats[m.team1Id].gw += g1w; stats[m.team2Id].gw += g2w;
-        stats[m.team1Id].gl += g2w; stats[m.team2Id].gl += g1w;
-        if (g1w > g2w) { stats[m.team1Id].w++; stats[m.team1Id].pts += 2; stats[m.team2Id].l++; stats[m.team2Id].pts += 1; }
-        else { stats[m.team2Id].w++; stats[m.team2Id].pts += 2; stats[m.team1Id].l++; stats[m.team1Id].pts += 1; }
-      });
-      const rows = Object.values(stats);
-      rows.forEach(r => r.gd = r.gw - r.gl);
-      rows.sort((a, b) => {
-        if (b.pts !== a.pts) return b.pts - a.pts;
-        if (b.gd !== a.gd) return b.gd - a.gd;
-        return b.gw - a.gw;
-      });
-      standings[g] = rows;
 
       // Check if enough matches are completed to determine top 2
       if (matchesInGroup.length < allMatchesInGroup.length) {
@@ -444,7 +437,7 @@
 
     if (incompleteGroups.length > 0) {
       const msg = incompleteGroups.map(g => `Group ${g}`).join(', ');
-      showToast(`Cannot setup: ${msg} — complete all group matches first`, 'error');
+      TU.showToast(`Cannot setup: ${msg} — complete all group matches first`, 'error');
       return;
     }
 
@@ -470,7 +463,7 @@
       state.matches.push({ id: genId('m'), stage: 'final', group: '', team1Id: '', team2Id: '', scores: [[0,0],[0,0],[0,0]], status: 'scheduled', scheduledTime: '', court: '', slot: 'final' });
     }
 
-    showToast('Knockout stage created! Semi-Finals and Final are ready.', 'success');
+    TU.showToast('Knockout stage created! Semi-Finals and Final are ready.', 'success');
     renderMatchesTab();
     renderScoresTab();
     saveData();
@@ -559,7 +552,7 @@
         html += `<button class="btn btn-sm ${scoresGroupFilter === '' ? 'btn-primary' : ''}" data-group-filter="">All</button>`;
         groups.forEach(g => {
           const count = groupMatches.filter(m => m.group === g).length;
-          html += `<button class="btn btn-sm ${scoresGroupFilter === g ? 'btn-primary' : ''}" data-group-filter="${g}">Group ${g} (${count})</button>`;
+          html += `<button class="btn btn-sm ${scoresGroupFilter === g ? 'btn-primary' : ''}" data-group-filter="${TU.escapeHtml(g)}">Group ${TU.escapeHtml(g)} (${count})</button>`;
         });
         html += '</div>';
       }
@@ -573,7 +566,7 @@
       if (!scoresGroupFilter) {
         groups.forEach(g => {
           const matchesInGroup = groupMatches.filter(m => m.group === g);
-          html += `<div style="font-weight:600;font-size:0.85rem;color:var(--primary);margin-bottom:8px">Group ${g}</div>`;
+          html += `<div style="font-weight:600;font-size:0.85rem;color:var(--primary);margin-bottom:8px">Group ${TU.escapeHtml(g)}</div>`;
           html += renderMatchSection(matchesInGroup, '', g);
         });
       } else {
@@ -631,13 +624,16 @@
     const needsSemiResult = m.stage === 'final' && (!m.team1Id || !m.team2Id);
     const semiNote = needsSemiResult ? '<div style="font-size:0.8rem;color:var(--accent);margin-top:4px">⏳ Waiting for semi-final results</div>' : '';
 
+    const courtText = m.court ? TU.escapeHtml(m.court) : '?';
+    const timeText = m.scheduledTime ? TU.escapeHtml(m.scheduledTime) : 'TBD';
+
     return `
       <div class="card" data-score-id="${m.id}" style="margin-bottom:12px">
         <div class="card-header">
           <div>
-            <div class="card-title">${escapeHtml(t1?.name || '?')} vs ${escapeHtml(t2?.name || '?')}</div>
+            <div class="card-title">${TU.escapeHtml(t1?.name || '?')} vs ${TU.escapeHtml(t2?.name || '?')}</div>
             ${semiNote}
-            <div class="card-meta">Court ${m.court || '?'} · ${m.scheduledTime || 'TBD'}</div>
+            <div class="card-meta">Court ${courtText} · ${timeText}</div>
           </div>
           ${statusBadge}
         </div>
@@ -645,12 +641,12 @@
           ${[0, 1, 2].map(i => `
             <div class="score-editor">
               <div class="score-input-group">
-                <label>${escapeHtml(t1?.name || 'Team 1')} G${i + 1}</label>
+                <label>${TU.escapeHtml(t1?.name || 'Team 1')} G${i + 1}</label>
                 <input type="number" min="0" class="score-t1" data-match="${m.id}" data-game="${i}" value="${scores[i]?.[0] || 0}">
               </div>
               <div class="score-input-divider">-</div>
               <div class="score-input-group">
-                <label>${escapeHtml(t2?.name || 'Team 2')} G${i + 1}</label>
+                <label>${TU.escapeHtml(t2?.name || 'Team 2')} G${i + 1}</label>
                 <input type="number" min="0" class="score-t2" data-match="${m.id}" data-game="${i}" value="${scores[i]?.[1] || 0}">
               </div>
             </div>
@@ -674,38 +670,46 @@
     const scores = [];
     let hasNonZero = false;
     for (let i = 0; i < 3; i++) {
-      const s1 = parseInt(t1Inputs[i]?.value || 0, 10);
-      const s2 = parseInt(t2Inputs[i]?.value || 0, 10);
+      let s1 = parseInt(t1Inputs[i]?.value || 0, 10);
+      let s2 = parseInt(t2Inputs[i]?.value || 0, 10);
+
+      if (Number.isNaN(s1) || Number.isNaN(s2) || s1 < 0 || s2 < 0 || s1 > 99 || s2 > 99) {
+        TU.showToast('Invalid score. Each game score must be a number between 0 and 99.', 'error');
+        return;
+      }
+
       if (s1 > 0 || s2 > 0) hasNonZero = true;
       scores.push([s1, s2]);
     }
 
-    const minPts = getMinPoints(match.stage);
-    const g1w = gamesWon(scores, 1, minPts);
-    const g2w = gamesWon(scores, 2, minPts);
+    const minPts = TU.getMinPoints(match.stage, state.config);
+    const g1w = TU.gamesWon(scores, 1, minPts);
+    const g2w = TU.gamesWon(scores, 2, minPts);
 
     let newStatus = match.status;
     if (g1w >= 2 || g2w >= 2) {
       newStatus = 'completed';
       const winnerName = g1w >= 2 ? (state.teams.find(t => t.id === match.team1Id)?.name || 'Team 1') : (state.teams.find(t => t.id === match.team2Id)?.name || 'Team 2');
-      showToast(`Match completed! ${winnerName} won ${Math.max(g1w,g2w)}-${Math.min(g1w,g2w)}`, 'success');
+      TU.showToast(`Match completed! ${winnerName} won ${Math.max(g1w,g2w)}-${Math.min(g1w,g2w)}`, 'success');
     } else if (hasNonZero) {
       newStatus = 'live';
-      showToast('Scores saved — match is live', 'success');
+      TU.showToast('Scores saved — match is live', 'success');
     } else {
       newStatus = 'scheduled';
-      showToast('Scores saved', 'success');
+      TU.showToast('Scores saved', 'success');
     }
 
     match.scores = scores;
     match.status = newStatus;
     if (newStatus === 'completed') {
-      match.completedAt = Date.now();
+      if (!match.completedAt) match.completedAt = Date.now();
+    } else {
+      delete match.completedAt;
     }
 
     // If a semi-final was just completed, proactively update the Final match
     if (match.stage === 'semi' && newStatus === 'completed') {
-      const winnerId = matchWinner(match);
+      const winnerId = TU.matchWinner(match, state.config);
       const finalMatch = state.matches.find(m => m.stage === 'final');
       if (finalMatch && winnerId) {
         if (match.slot === 'sf1') finalMatch.team1Id = winnerId;
@@ -720,16 +724,19 @@
   // ===== CONFIG TAB =====
   function renderConfigTab() {
     document.getElementById('config-name').value = state.config.tournamentName || '';
-    document.getElementById('config-group-pts').value = state.config.groupStagePoints || 15;
-    document.getElementById('config-ko-pts').value = state.config.knockoutPoints || 21;
-    document.getElementById('config-advance').value = state.config.teamsToAdvance || 2;
+    document.getElementById('config-group-pts').value = state.config.groupStagePoints ?? 15;
+    document.getElementById('config-ko-pts').value = state.config.knockoutPoints ?? 21;
+    document.getElementById('config-advance').value = state.config.teamsToAdvance ?? 2;
   }
 
   document.getElementById('save-config-btn').addEventListener('click', () => {
     state.config.tournamentName = document.getElementById('config-name').value.trim();
-    state.config.groupStagePoints = parseInt(document.getElementById('config-group-pts').value, 10) || 15;
-    state.config.knockoutPoints = parseInt(document.getElementById('config-ko-pts').value, 10) || 21;
-    state.config.teamsToAdvance = parseInt(document.getElementById('config-advance').value, 10) || 2;
+    const grpPts = parseInt(document.getElementById('config-group-pts').value, 10);
+    const koPts = parseInt(document.getElementById('config-ko-pts').value, 10);
+    const advance = parseInt(document.getElementById('config-advance').value, 10);
+    state.config.groupStagePoints = Number.isNaN(grpPts) ? (state.config.groupStagePoints ?? 15) : grpPts;
+    state.config.knockoutPoints = Number.isNaN(koPts) ? (state.config.knockoutPoints ?? 21) : koPts;
+    state.config.teamsToAdvance = Number.isNaN(advance) ? (state.config.teamsToAdvance ?? 2) : advance;
     saveData();
   });
 
@@ -739,119 +746,8 @@
     renderMatchesTab();
     renderScoresTab();
     saveData();
-    showToast('All matches and scores cleared', 'success');
+    TU.showToast('All matches and scores cleared', 'success');
   });
-
-  // ===== Utilities =====
-  function gamesWon(scores, teamNum, minPoints) {
-    if (!scores || !Array.isArray(scores)) return 0;
-    let wins = 0;
-    scores.forEach(game => {
-      if (!game) return;
-      const [s1, s2] = game;
-      const winnerScore = teamNum === 1 ? s1 : s2;
-      const loserScore = teamNum === 1 ? s2 : s1;
-      if (winnerScore > loserScore && winnerScore >= minPoints) wins++;
-    });
-    return wins;
-  }
-
-  function getMinPoints(stage) {
-    if (stage === 'group') return state.config.groupStagePoints || 15;
-    return state.config.knockoutPoints || 21;
-  }
-
-  function matchWinner(match) {
-    if (!match.scores) return null;
-    const min = getMinPoints(match.stage);
-    const g1 = gamesWon(match.scores, 1, min);
-    const g2 = gamesWon(match.scores, 2, min);
-    if (g1 > g2) return match.team1Id;
-    if (g2 > g1) return match.team2Id;
-    return null;
-  }
-
-  function resolveKnockoutMatch(m) {
-    const match = { ...m };
-    if (match.stage === 'semi') {
-      if (match.slot === 'sf1') {
-        const a1 = getGroupTopTeam('A', 0);
-        const b2 = getGroupTopTeam('B', 1);
-        if (a1) match.team1Id = a1.id;
-        if (b2) match.team2Id = b2.id;
-      } else if (match.slot === 'sf2') {
-        const b1 = getGroupTopTeam('B', 0);
-        const a2 = getGroupTopTeam('A', 1);
-        if (b1) match.team1Id = b1.id;
-        if (a2) match.team2Id = a2.id;
-      }
-    }
-    if (match.stage === 'final') {
-      const sf1 = state.matches.find(x => x.stage === 'semi' && x.slot === 'sf1');
-      const sf2 = state.matches.find(x => x.stage === 'semi' && x.slot === 'sf2');
-      if (sf1 && sf1.status === 'completed') {
-        const w1 = matchWinner(sf1);
-        if (w1) match.team1Id = w1;
-      }
-      if (sf2 && sf2.status === 'completed') {
-        const w2 = matchWinner(sf2);
-        if (w2) match.team2Id = w2;
-      }
-    }
-    return match;
-  }
-
-  function getGroupTopTeam(group, rank) {
-    const teamsInGroup = state.teams.filter(t => t.group === group);
-    const matchesInGroup = state.matches.filter(m => m.stage === 'group' && m.group === group && m.status === 'completed');
-    const stats = {};
-    teamsInGroup.forEach(t => {
-      stats[t.id] = { team: t, mp: 0, w: 0, l: 0, gw: 0, gl: 0, pts: 0 };
-    });
-    matchesInGroup.forEach(m => {
-      if (!stats[m.team1Id] || !stats[m.team2Id]) return;
-      const minPts = getMinPoints('group');
-      const g1w = gamesWon(m.scores, 1, minPts);
-      const g2w = gamesWon(m.scores, 2, minPts);
-      stats[m.team1Id].mp++; stats[m.team2Id].mp++;
-      stats[m.team1Id].gw += g1w; stats[m.team2Id].gw += g2w;
-      stats[m.team1Id].gl += g2w; stats[m.team2Id].gl += g1w;
-      if (g1w > g2w) { stats[m.team1Id].w++; stats[m.team1Id].pts += 2; stats[m.team2Id].l++; stats[m.team2Id].pts += 1; }
-      else { stats[m.team2Id].w++; stats[m.team2Id].pts += 2; stats[m.team1Id].l++; stats[m.team1Id].pts += 1; }
-    });
-    const rows = Object.values(stats);
-    rows.forEach(r => r.gd = r.gw - r.gl);
-    rows.sort((a, b) => {
-      if (b.pts !== a.pts) return b.pts - a.pts;
-      if (b.gd !== a.gd) return b.gd - a.gd;
-      return b.gw - a.gw;
-    });
-    return rows[rank]?.team || null;
-  }
-
-  function escapeHtml(text) {
-    if (!text) return '';
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
-  }
-
-  function showToast(msg, type = 'success') {
-    const container = document.getElementById('toast-container') || createToastContainer();
-    const toast = document.createElement('div');
-    toast.className = `toast ${type}`;
-    toast.textContent = msg;
-    container.appendChild(toast);
-    setTimeout(() => toast.remove(), 3000);
-  }
-
-  function createToastContainer() {
-    const el = document.createElement('div');
-    el.id = 'toast-container';
-    el.className = 'toast-container';
-    document.body.appendChild(el);
-    return el;
-  }
 
   // ===== Start =====
   if (document.readyState === 'loading') {

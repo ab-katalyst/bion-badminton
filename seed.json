@@ -1,0 +1,22 @@
+{
+  "teams": [
+    {"id":"t-a1","name":"Hemant & Sandeep","group":"A","players":"Hemant, Sandeep"},
+    {"id":"t-a2","name":"Raja & Lakshman Reddy","group":"A","players":"Raja, Lakshman Reddy"},
+    {"id":"t-a3","name":"Deepak & Abhi","group":"A","players":"Deepak, Abhi"},
+    {"id":"t-a4","name":"Atharv & Ashish","group":"A","players":"Atharv, Ashish"},
+    {"id":"t-a5","name":"Sai Kishore & Amritanshu","group":"A","players":"Sai Kishore, Amritanshu"},
+    {"id":"t-b1","name":"Vijay & Jagdish","group":"B","players":"Vijay, Jagdish"},
+    {"id":"t-b2","name":"Pavan & Yuvraj","group":"B","players":"Pavan, Yuvraj"},
+    {"id":"t-b3","name":"Anji & Prakash","group":"B","players":"Anji, Prakash"},
+    {"id":"t-b4","name":"Shubham & Nitish","group":"B","players":"Shubham, Nitish"},
+    {"id":"t-b5","name":"Vivek & Savio","group":"B","players":"Vivek, Savio"}
+  ],
+  "matches": [],
+  "config": {
+    "tournamentName": "Bion Badminton Tournament",
+    "groupStagePoints": 15,
+    "knockoutPoints": 21,
+    "gamesPerMatch": 3,
+    "teamsToAdvance": 2
+  }
+}
