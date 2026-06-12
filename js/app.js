@@ -104,8 +104,8 @@
       const s1 = stats[m.team1Id];
       const s2 = stats[m.team2Id];
 
-      const g1w = gamesWon(m.scores, 1);
-      const g2w = gamesWon(m.scores, 2);
+      const g1w = gamesWon(m.scores, 1, getMinPoints('group'));
+      const g2w = gamesWon(m.scores, 2, getMinPoints('group'));
 
       s1.mp++; s2.mp++;
       s1.gw += g1w; s2.gw += g2w;
@@ -132,30 +132,39 @@
     return rows;
   }
 
-  function gamesWon(scores, teamNum) {
+  function gamesWon(scores, teamNum, minPoints) {
     if (!scores || !Array.isArray(scores)) return 0;
     let wins = 0;
     scores.forEach(game => {
       if (!game) return;
       const [s1, s2] = game;
-      if (teamNum === 1 && s1 > s2) wins++;
-      if (teamNum === 2 && s2 > s1) wins++;
+      const winnerScore = teamNum === 1 ? s1 : s2;
+      const loserScore = teamNum === 1 ? s2 : s1;
+      // A game is won only if: score > opponent AND score >= minimum points
+      if (winnerScore > loserScore && winnerScore >= minPoints) wins++;
     });
     return wins;
   }
 
+  function getMinPoints(stage) {
+    if (stage === 'group') return state.config.groupStagePoints || 15;
+    return state.config.knockoutPoints || 21;
+  }
+
   function matchWinner(match) {
     if (!match.scores) return null;
-    const g1 = gamesWon(match.scores, 1);
-    const g2 = gamesWon(match.scores, 2);
+    const min = getMinPoints(match.stage);
+    const g1 = gamesWon(match.scores, 1, min);
+    const g2 = gamesWon(match.scores, 2, min);
     if (g1 > g2) return match.team1Id;
     if (g2 > g1) return match.team2Id;
     return null;
   }
 
   function matchSummary(match) {
-    const g1 = gamesWon(match.scores, 1);
-    const g2 = gamesWon(match.scores, 2);
+    const min = getMinPoints(match.stage);
+    const g1 = gamesWon(match.scores, 1, min);
+    const g2 = gamesWon(match.scores, 2, min);
     if (g1 === 0 && g2 === 0) return '';
     return `${g1}-${g2}`;
   }

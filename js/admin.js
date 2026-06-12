@@ -383,8 +383,9 @@
       });
       matchesInGroup.forEach(m => {
         if (!stats[m.team1Id] || !stats[m.team2Id]) return;
-        const g1w = gamesWon(m.scores, 1);
-        const g2w = gamesWon(m.scores, 2);
+        const minPts = getMinPoints('group');
+        const g1w = gamesWon(m.scores, 1, minPts);
+        const g2w = gamesWon(m.scores, 2, minPts);
         stats[m.team1Id].mp++; stats[m.team2Id].mp++;
         stats[m.team1Id].gw += g1w; stats[m.team2Id].gw += g2w;
         stats[m.team1Id].gl += g2w; stats[m.team2Id].gl += g1w;
@@ -568,8 +569,9 @@
       scores.push([s1, s2]);
     }
 
-    const g1w = gamesWon(scores, 1);
-    const g2w = gamesWon(scores, 2);
+    const minPts = getMinPoints(match.stage);
+    const g1w = gamesWon(scores, 1, minPts);
+    const g2w = gamesWon(scores, 2, minPts);
 
     let newStatus = match.status;
     if (g1w >= 2 || g2w >= 2) {
@@ -617,22 +619,29 @@
   });
 
   // ===== Utilities =====
-  function gamesWon(scores, teamNum) {
+  function gamesWon(scores, teamNum, minPoints) {
     if (!scores || !Array.isArray(scores)) return 0;
     let wins = 0;
     scores.forEach(game => {
       if (!game) return;
       const [s1, s2] = game;
-      if (teamNum === 1 && s1 > s2) wins++;
-      if (teamNum === 2 && s2 > s1) wins++;
+      const winnerScore = teamNum === 1 ? s1 : s2;
+      const loserScore = teamNum === 1 ? s2 : s1;
+      if (winnerScore > loserScore && winnerScore >= minPoints) wins++;
     });
     return wins;
   }
 
+  function getMinPoints(stage) {
+    if (stage === 'group') return state.config.groupStagePoints || 15;
+    return state.config.knockoutPoints || 21;
+  }
+
   function matchWinner(match) {
     if (!match.scores) return null;
-    const g1 = gamesWon(match.scores, 1);
-    const g2 = gamesWon(match.scores, 2);
+    const min = getMinPoints(match.stage);
+    const g1 = gamesWon(match.scores, 1, min);
+    const g2 = gamesWon(match.scores, 2, min);
     if (g1 > g2) return match.team1Id;
     if (g2 > g1) return match.team2Id;
     return null;
@@ -677,8 +686,9 @@
     });
     matchesInGroup.forEach(m => {
       if (!stats[m.team1Id] || !stats[m.team2Id]) return;
-      const g1w = gamesWon(m.scores, 1);
-      const g2w = gamesWon(m.scores, 2);
+      const minPts = getMinPoints('group');
+      const g1w = gamesWon(m.scores, 1, minPts);
+      const g2w = gamesWon(m.scores, 2, minPts);
       stats[m.team1Id].mp++; stats[m.team2Id].mp++;
       stats[m.team1Id].gw += g1w; stats[m.team2Id].gw += g2w;
       stats[m.team1Id].gl += g2w; stats[m.team2Id].gl += g1w;
