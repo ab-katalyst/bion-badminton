@@ -56,6 +56,17 @@ body {
   font-size: 1.4rem;
   font-weight: 700;
   letter-spacing: -0.3px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.header-logo {
+  height: 36px;
+  width: auto;
+  display: inline-block;
+  vertical-align: middle;
 }
 
 .header .subtitle {
