@@ -265,15 +265,6 @@
       knockoutHtml += '<div class="section-title">Knockout Stage</div>';
       knockoutHtml += '<div class="bracket">';
 
-      if (semis.length > 0) {
-        knockoutHtml += `
-          <div class="bracket-round">
-            <div class="bracket-round-title">Semi-Finals (Best of 3, 21 pts)</div>
-            ${semis.map(m => renderBracketMatch(resolveKnockoutMatch(m, resolved), 'sf')).join('')}
-          </div>
-        `;
-      }
-
       if (finals.length > 0) {
         knockoutHtml += `
           <div class="bracket-round">
@@ -283,16 +274,27 @@
         `;
       }
 
+      if (semis.length > 0) {
+        knockoutHtml += `
+          <div class="bracket-round">
+            <div class="bracket-round-title">Semi-Finals (Best of 3, 21 pts)</div>
+            ${semis.map(m => renderBracketMatch(resolveKnockoutMatch(m, resolved), 'sf')).join('')}
+          </div>
+        `;
+      }
+
       knockoutHtml += '</div>';
+      knockoutHtml += '<div style="height:16px"></div>';
     }
 
     // Group tables shown below knockout
-    const groupsHtml = groups.map(g => {
+    let groupsHtml = '<div class="section-title">Group Standings</div>';
+    groupsHtml += groups.map(g => {
       const rows = computeStandings(g);
       return `
         <div class="card">
           <div class="card-header">
-            <div class="card-title">Group ${g}</div>
+            <div class="card-title">Group ${g} (Best of 3, 15 pts)</div>
             <div class="card-meta">${rows.filter(r => r.mp > 0).length} of ${rows.length} teams played</div>
           </div>
           <div class="table-wrap">
