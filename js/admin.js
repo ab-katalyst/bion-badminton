@@ -12,6 +12,7 @@
   };
 
   let isLoggedIn = false;
+  let scoresStage = 'group'; // active sub-tab in scores: group | semi | final
 
   // ===== Init =====
   function init() {
@@ -451,15 +452,30 @@
       return;
     }
 
-    // Group matches by stage
     const groupMatches = state.matches.filter(m => m.stage === 'group').sort((a, b) => (a.group || '').localeCompare(b.group || '') || (a.scheduledTime || '').localeCompare(b.scheduledTime || ''));
     const semiMatches = state.matches.filter(m => m.stage === 'semi').sort((a, b) => (a.slot || '').localeCompare(b.slot || ''));
     const finalMatches = state.matches.filter(m => m.stage === 'final');
 
+    // Default to most advanced stage that has matches
+    if (scoresStage === 'final' && finalMatches.length === 0) scoresStage = semiMatches.length > 0 ? 'semi' : 'group';
+    if (scoresStage === 'semi' && semiMatches.length === 0) scoresStage = 'group';
+
     let html = '';
 
+    // Sub-nav pills
+    html += '<div class="sub-nav" style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">';
     if (groupMatches.length > 0) {
-      html += '<div class="admin-section-title">Group Stage</div>';
+      html += `<button class="btn btn-sm ${scoresStage === 'group' ? 'btn-primary' : ''}" data-scores-stage="group">Group Stage (${groupMatches.length})</button>`;
+    }
+    if (semiMatches.length > 0) {
+      html += `<button class="btn btn-sm ${scoresStage === 'semi' ? 'btn-primary' : ''}" data-scores-stage="semi">Semi-Finals (${semiMatches.length})</button>`;
+    }
+    if (finalMatches.length > 0) {
+      html += `<button class="btn btn-sm ${scoresStage === 'final' ? 'btn-primary' : ''}" data-scores-stage="final">Final (${finalMatches.length})</button>`;
+    }
+    html += '</div>';
+
+    if (scoresStage === 'group' && groupMatches.length > 0) {
       const byGroup = {};
       groupMatches.forEach(m => {
         const g = m.group || 'Other';
@@ -472,17 +488,22 @@
       });
     }
 
-    if (semiMatches.length > 0) {
-      html += '<div class="admin-section-title" style="margin-top:16px">Semi-Finals</div>';
+    if (scoresStage === 'semi' && semiMatches.length > 0) {
       html += semiMatches.map(m => renderScoreCard(m)).join('');
     }
 
-    if (finalMatches.length > 0) {
-      html += '<div class="admin-section-title" style="margin-top:16px">Final</div>';
-      html += finalMatches.map(m => renderScoreCard(m)).join('');
+    if (scoresStage === 'final' && finalMatches.length > 0) {
+      html += finalMatches.map(m => renderScoreCard(resolveKnockoutMatch(m))).join('');
     }
 
     container.innerHTML = html;
+
+    container.querySelectorAll('[data-scores-stage]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        scoresStage = btn.dataset.scoresStage;
+        renderScoresTab();
+      });
+    });
 
     container.querySelectorAll('.save-score-btn').forEach(btn => {
       btn.addEventListener('click', () => saveMatchScore(btn.dataset.id));
@@ -606,6 +627,72 @@
       if (teamNum === 2 && s2 > s1) wins++;
     });
     return wins;
+  }
+
+  function matchWinner(match) {
+    if (!match.scores) return null;
+    const g1 = gamesWon(match.scores, 1);
+    const g2 = gamesWon(match.scores, 2);
+    if (g1 > g2) return match.team1Id;
+    if (g2 > g1) return match.team2Id;
+    return null;
+  }
+
+  function resolveKnockoutMatch(m) {
+    const match = { ...m };
+    if (match.stage === 'semi') {
+      if (match.slot === 'sf1') {
+        const a1 = getGroupTopTeam('A', 0);
+        const b2 = getGroupTopTeam('B', 1);
+        if (a1) match.team1Id = a1.id;
+        if (b2) match.team2Id = b2.id;
+      } else if (match.slot === 'sf2') {
+        const b1 = getGroupTopTeam('B', 0);
+        const a2 = getGroupTopTeam('A', 1);
+        if (b1) match.team1Id = b1.id;
+        if (a2) match.team2Id = a2.id;
+      }
+    }
+    if (match.stage === 'final') {
+      const sf1 = state.matches.find(x => x.stage === 'semi' && x.slot === 'sf1');
+      const sf2 = state.matches.find(x => x.stage === 'semi' && x.slot === 'sf2');
+      if (sf1 && sf1.status === 'completed') {
+        const w1 = matchWinner(sf1);
+        if (w1) match.team1Id = w1;
+      }
+      if (sf2 && sf2.status === 'completed') {
+        const w2 = matchWinner(sf2);
+        if (w2) match.team2Id = w2;
+      }
+    }
+    return match;
+  }
+
+  function getGroupTopTeam(group, rank) {
+    const teamsInGroup = state.teams.filter(t => t.group === group);
+    const matchesInGroup = state.matches.filter(m => m.stage === 'group' && m.group === group && m.status === 'completed');
+    const stats = {};
+    teamsInGroup.forEach(t => {
+      stats[t.id] = { team: t, mp: 0, w: 0, l: 0, gw: 0, gl: 0, pts: 0 };
+    });
+    matchesInGroup.forEach(m => {
+      if (!stats[m.team1Id] || !stats[m.team2Id]) return;
+      const g1w = gamesWon(m.scores, 1);
+      const g2w = gamesWon(m.scores, 2);
+      stats[m.team1Id].mp++; stats[m.team2Id].mp++;
+      stats[m.team1Id].gw += g1w; stats[m.team2Id].gw += g2w;
+      stats[m.team1Id].gl += g2w; stats[m.team2Id].gl += g1w;
+      if (g1w > g2w) { stats[m.team1Id].w++; stats[m.team1Id].pts += 2; stats[m.team2Id].l++; stats[m.team2Id].pts += 1; }
+      else { stats[m.team2Id].w++; stats[m.team2Id].pts += 2; stats[m.team1Id].l++; stats[m.team1Id].pts += 1; }
+    });
+    const rows = Object.values(stats);
+    rows.forEach(r => r.gd = r.gw - r.gl);
+    rows.sort((a, b) => {
+      if (b.pts !== a.pts) return b.pts - a.pts;
+      if (b.gd !== a.gd) return b.gd - a.gd;
+      return b.gw - a.gw;
+    });
+    return rows[rank]?.team || null;
   }
 
   function escapeHtml(text) {

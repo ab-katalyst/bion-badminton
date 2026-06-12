@@ -535,6 +535,17 @@ input:focus, select:focus, textarea:focus {
   background: #b71c1c;
 }
 
+.sub-nav .btn:not(.btn-primary) {
+  background: var(--bg);
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+}
+
+.sub-nav .btn:not(.btn-primary):hover {
+  background: #e8eaed;
+  color: var(--text);
+}
+
 .btn-sm {
   padding: 6px 12px;
   font-size: 0.8rem;
