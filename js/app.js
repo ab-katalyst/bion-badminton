@@ -426,13 +426,16 @@
     if (m.scheduledTime) metaParts.push(m.scheduledTime);
     if (m.court) metaParts.push(`Court ${m.court}`);
 
+    let metaText = metaParts.join(' · ');
+    if (summary) metaText += (metaText ? ' · ' : '') + summary;
+
     const cardClass = isLiveView ? 'card live-card' : 'card';
 
     return `
       <div class="${cardClass}" data-match-id="${m.id}">
         <div class="card-header">
-          <div class="card-meta">${metaParts.join(' · ')} · ${summary || statusBadge}</div>
-          ${m.status !== 'completed' ? statusBadge : ''}
+          <div class="card-meta">${metaText || '&nbsp;'}</div>
+          ${!isLiveView && m.status !== 'completed' ? statusBadge : ''}
         </div>
         <div class="match-teams">
           <div class="team-block ${winner === m.team1Id ? 'winner' : winner === m.team2Id ? 'loser' : ''}">
