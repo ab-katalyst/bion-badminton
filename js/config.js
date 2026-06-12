@@ -12,7 +12,7 @@ const CONFIG = {
   APPS_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbxXTYbGGaG1sL-4bB58vuKeHb9lg_c8ueLl6ijHJxN5K4-z52Phgnb8_8Ofbf6Xr1B5/exec',
 
   // Admin login password
-  ADMIN_PASSWORD: 'badmin2024',
+  ADMIN_PASSWORD: 'bion@123',
 
   // Tournament settings (can also be changed from admin panel)
   DEFAULTS: {
