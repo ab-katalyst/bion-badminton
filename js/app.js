@@ -255,7 +255,39 @@
       return;
     }
 
-    let html = groups.map(g => {
+    // Knockout bracket section shown first in standings
+    let knockoutHtml = '';
+    const resolved = getKnockoutTeams();
+    const semis = state.matches.filter(m => m.stage === 'semi').sort((a, b) => (a.slot || '').localeCompare(b.slot || ''));
+    const finals = state.matches.filter(m => m.stage === 'final');
+
+    if (semis.length > 0 || finals.length > 0) {
+      knockoutHtml += '<div class="section-title">Knockout Stage</div>';
+      knockoutHtml += '<div class="bracket">';
+
+      if (semis.length > 0) {
+        knockoutHtml += `
+          <div class="bracket-round">
+            <div class="bracket-round-title">Semi-Finals (Best of 3, 21 pts)</div>
+            ${semis.map(m => renderBracketMatch(resolveKnockoutMatch(m, resolved), 'sf')).join('')}
+          </div>
+        `;
+      }
+
+      if (finals.length > 0) {
+        knockoutHtml += `
+          <div class="bracket-round">
+            <div class="bracket-round-title">Final (Best of 3, 21 pts)</div>
+            ${finals.map(m => renderBracketMatch(resolveKnockoutMatch(m, resolved), 'final')).join('')}
+          </div>
+        `;
+      }
+
+      knockoutHtml += '</div>';
+    }
+
+    // Group tables shown below knockout
+    const groupsHtml = groups.map(g => {
       const rows = computeStandings(g);
       return `
         <div class="card">
@@ -295,47 +327,7 @@
       `;
     }).join('');
 
-    // Knockout bracket section (semi-finals + final) shown inside standings
-    const resolved = getKnockoutTeams();
-    const semis = state.matches.filter(m => m.stage === 'semi').sort((a, b) => (a.slot || '').localeCompare(b.slot || ''));
-    const finals = state.matches.filter(m => m.stage === 'final');
-    const thirds = state.matches.filter(m => m.stage === 'third');
-
-    if (semis.length > 0 || finals.length > 0) {
-      html += '<div class="section-title" style="margin-top:24px">Knockout Stage</div>';
-      html += '<div class="bracket">';
-
-      if (semis.length > 0) {
-        html += `
-          <div class="bracket-round">
-            <div class="bracket-round-title">Semi-Finals (Best of 3, 21 pts)</div>
-            ${semis.map(m => renderBracketMatch(resolveKnockoutMatch(m, resolved), 'sf')).join('')}
-          </div>
-        `;
-      }
-
-      if (thirds.length > 0) {
-        html += `
-          <div class="bracket-round">
-            <div class="bracket-round-title">3rd Place Match</div>
-            ${thirds.map(m => renderBracketMatch(resolveKnockoutMatch(m, resolved), 'third')).join('')}
-          </div>
-        `;
-      }
-
-      if (finals.length > 0) {
-        html += `
-          <div class="bracket-round">
-            <div class="bracket-round-title">Final (Best of 3, 21 pts)</div>
-            ${finals.map(m => renderBracketMatch(resolveKnockoutMatch(m, resolved), 'final')).join('')}
-          </div>
-        `;
-      }
-
-      html += '</div>';
-    }
-
-    container.innerHTML = html;
+    container.innerHTML = knockoutHtml + groupsHtml;
   }
 
   function renderSchedule() {
