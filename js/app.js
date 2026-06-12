@@ -283,10 +283,9 @@
               <tbody>
                 ${rows.map((r, i) => `
                   <tr>
-                    <td><span class="rank ${i < (state.config.teamsToAdvance || 2) ? 'top' : ''}">${i + 1}</span></td>
+                    <td><span class="rank ${i < (state.config.teamsToAdvance || 2) && rows.some(x => x.mp > 0) ? 'top' : ''}">${i + 1}</span></td>
                     <td>
                       <div class="list-item-title">${escapeHtml(r.team.name)}</div>
-                      <div class="list-item-meta">${escapeHtml(r.team.players || '')}</div>
                     </td>
                     <td style="text-align:center">${r.mp}</td>
                     <td style="text-align:center">${r.w}</td>
