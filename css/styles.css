@@ -32,6 +32,7 @@ body {
   color: var(--text);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
 .container {
@@ -147,6 +148,7 @@ body {
   margin-bottom: 12px;
   box-shadow: var(--shadow);
   transition: box-shadow 0.2s;
+  overflow: hidden;
 }
 
 .card:hover {
@@ -452,6 +454,11 @@ tr:hover td {
   display: grid;
   grid-template-columns: 1fr;
   gap: 12px;
+  min-width: 0;
+}
+
+.form-grid > * {
+  min-width: 0;
 }
 
 @media (min-width: 600px) {
@@ -486,6 +493,9 @@ input, select, textarea {
   font-family: inherit;
   background: white;
   transition: border-color 0.2s;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 input:focus, select:focus, textarea:focus {
@@ -556,6 +566,13 @@ input:focus, select:focus, textarea:focus {
   gap: 8px;
   flex-wrap: wrap;
   margin-top: 12px;
+  min-width: 0;
+}
+
+.btn-row .btn {
+  min-width: 0;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 /* ===== Match Score Editor ===== */
@@ -565,6 +582,7 @@ input:focus, select:focus, textarea:focus {
   gap: 12px;
   align-items: end;
   margin-bottom: 12px;
+  min-width: 0;
 }
 
 .score-input-group {
@@ -594,6 +612,8 @@ input:focus, select:focus, textarea:focus {
   align-items: center;
   padding: 10px 0;
   border-bottom: 1px solid var(--border);
+  gap: 8px;
+  min-width: 0;
 }
 
 .list-item:last-child {
@@ -602,6 +622,8 @@ input:focus, select:focus, textarea:focus {
 
 .list-item-info {
   flex: 1;
+  min-width: 0;
+  overflow-wrap: break-word;
 }
 
 .list-item-title {
@@ -758,7 +780,8 @@ input:focus, select:focus, textarea:focus {
   }
 
   .score-editor {
-    gap: 8px;
+    gap: 6px;
+    grid-template-columns: 1fr 20px 1fr;
   }
 
   .score-input-group label {
@@ -771,7 +794,7 @@ input:focus, select:focus, textarea:focus {
 
   .score-input-group input {
     font-size: 1rem;
-    padding: 8px;
+    padding: 8px 4px;
   }
 
   .btn {
@@ -790,6 +813,58 @@ input:focus, select:focus, textarea:focus {
 
   .card {
     padding: 12px;
+  }
+
+  .list-item {
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .admin-section-title {
+    font-size: 0.95rem;
+    overflow-wrap: break-word;
+  }
+}
+
+@media (max-width: 360px) {
+  .header h1 {
+    font-size: 1rem;
+  }
+
+  .nav-btn {
+    padding: 5px 8px;
+    font-size: 0.7rem;
+  }
+
+  .form-grid {
+    gap: 8px;
+  }
+
+  .btn-row {
+    flex-direction: column;
+  }
+
+  .btn-row .btn {
+    width: 100%;
+  }
+
+  .score-editor {
+    grid-template-columns: 1fr 16px 1fr;
+    gap: 4px;
+  }
+
+  .score-input-group input {
+    padding: 6px 2px;
+    font-size: 0.95rem;
+  }
+
+  .card {
+    padding: 10px;
+    border-radius: 8px;
+  }
+
+  .container {
+    padding: 8px;
   }
 }
 
