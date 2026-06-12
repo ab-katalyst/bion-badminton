@@ -540,6 +540,15 @@
     saveData();
   });
 
+  document.getElementById('reset-btn').addEventListener('click', () => {
+    if (!confirm('Reset all matches and scores? Teams and groups will be kept. This cannot be undone.')) return;
+    state.matches = [];
+    renderMatchesTab();
+    renderScoresTab();
+    saveData();
+    showToast('All matches and scores cleared', 'success');
+  });
+
   // ===== Utilities =====
   function gamesWon(scores, teamNum) {
     if (!scores || !Array.isArray(scores)) return 0;
