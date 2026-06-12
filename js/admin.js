@@ -13,6 +13,8 @@
 
   let isLoggedIn = false;
   let scoresStage = 'group'; // active sub-tab in scores: group | semi | final
+  let scoresGroupFilter = ''; // '' = all groups, or 'A', 'B', etc.
+  let showCompleted = false; // completed matches collapsed by default
 
   // ===== Init =====
   function init() {
@@ -463,7 +465,7 @@
 
     let html = '';
 
-    // Sub-nav pills
+    // Sub-nav pills for stage
     html += '<div class="sub-nav" style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">';
     if (groupMatches.length > 0) {
       html += `<button class="btn btn-sm ${scoresStage === 'group' ? 'btn-primary' : ''}" data-scores-stage="group">Group Stage (${groupMatches.length})</button>`;
@@ -476,32 +478,99 @@
     }
     html += '</div>';
 
+    // Helper to split and render matches
+    function renderMatchSection(matches, label, suffix = '') {
+      const active = matches.filter(m => m.status !== 'completed');
+      const completed = matches.filter(m => m.status === 'completed');
+
+      let sectionHtml = '';
+
+      // Active matches first
+      if (active.length > 0) {
+        sectionHtml += active.map(m => renderScoreCard(m)).join('');
+      }
+
+      // Completed matches collapsed by default
+      if (completed.length > 0) {
+        const toggleId = `toggle-completed${suffix}`;
+        const wrapId = `completed-wrap${suffix}`;
+        sectionHtml += `
+          <div style="margin:12px 0">
+            <button class="btn btn-sm toggle-completed-btn" data-toggle="${suffix}" style="background:var(--bg);color:var(--text-secondary);border:1px solid var(--border);width:100%">
+              ${showCompleted ? '▲ Hide' : '▼ Show'} ${completed.length} Completed Match${completed.length > 1 ? 'es' : ''}
+            </button>
+            <div id="${wrapId}" class="${showCompleted ? '' : 'hidden'}" style="margin-top:8px">
+              ${completed.map(m => renderScoreCard(m)).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      if (active.length === 0 && completed.length === 0 && label) {
+        sectionHtml += `<p class="text-center" style="color:var(--text-secondary);padding:12px">No ${label} matches.</p>`;
+      }
+
+      return sectionHtml;
+    }
+
     if (scoresStage === 'group' && groupMatches.length > 0) {
-      const byGroup = {};
-      groupMatches.forEach(m => {
-        const g = m.group || 'Other';
-        if (!byGroup[g]) byGroup[g] = [];
-        byGroup[g].push(m);
-      });
-      Object.entries(byGroup).forEach(([g, matches]) => {
-        html += `<div style="font-weight:600;font-size:0.85rem;color:var(--primary);margin-bottom:8px">Group ${g}</div>`;
-        html += matches.map(m => renderScoreCard(m)).join('');
-      });
+      // Group filter pills
+      const groups = [...new Set(groupMatches.map(m => m.group))].sort();
+      if (groups.length > 1) {
+        html += '<div class="sub-nav" style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap">';
+        html += `<button class="btn btn-sm ${scoresGroupFilter === '' ? 'btn-primary' : ''}" data-group-filter="">All</button>`;
+        groups.forEach(g => {
+          const count = groupMatches.filter(m => m.group === g).length;
+          html += `<button class="btn btn-sm ${scoresGroupFilter === g ? 'btn-primary' : ''}" data-group-filter="${g}">Group ${g} (${count})</button>`;
+        });
+        html += '</div>';
+      }
+
+      let filtered = groupMatches;
+      if (scoresGroupFilter) {
+        filtered = groupMatches.filter(m => m.group === scoresGroupFilter);
+      }
+
+      // Show grouped by group when viewing all
+      if (!scoresGroupFilter) {
+        groups.forEach(g => {
+          const matchesInGroup = groupMatches.filter(m => m.group === g);
+          html += `<div style="font-weight:600;font-size:0.85rem;color:var(--primary);margin-bottom:8px">Group ${g}</div>`;
+          html += renderMatchSection(matchesInGroup, '', g);
+        });
+      } else {
+        html += renderMatchSection(filtered, `Group ${scoresGroupFilter}`, scoresGroupFilter);
+      }
     }
 
     if (scoresStage === 'semi' && semiMatches.length > 0) {
-      html += semiMatches.map(m => renderScoreCard(m)).join('');
+      html += renderMatchSection(semiMatches, 'semi-final', 'semi');
     }
 
     if (scoresStage === 'final' && finalMatches.length > 0) {
-      html += finalMatches.map(m => renderScoreCard(resolveKnockoutMatch(m))).join('');
+      html += renderMatchSection(finalMatches, 'final', 'final');
     }
 
     container.innerHTML = html;
 
+    // Event listeners
     container.querySelectorAll('[data-scores-stage]').forEach(btn => {
       btn.addEventListener('click', () => {
         scoresStage = btn.dataset.scoresStage;
+        renderScoresTab();
+      });
+    });
+
+    container.querySelectorAll('[data-group-filter]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        scoresGroupFilter = btn.dataset.groupFilter;
+        renderScoresTab();
+      });
+    });
+
+    container.querySelectorAll('.toggle-completed-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        showCompleted = !showCompleted;
         renderScoresTab();
       });
     });
