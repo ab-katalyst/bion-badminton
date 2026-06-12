@@ -683,3 +683,105 @@ input:focus, select:focus, textarea:focus {
 .mt-3 { margin-top: 12px; }
 .mb-2 { margin-bottom: 8px; }
 .mb-3 { margin-bottom: 12px; }
+
+/* ===== Mobile Optimizations ===== */
+@media (max-width: 480px) {
+  .header h1 {
+    font-size: 1.15rem;
+  }
+
+  .nav-btn {
+    padding: 6px 10px;
+    font-size: 0.75rem;
+  }
+
+  .match-teams {
+    flex-direction: row;
+    gap: 6px;
+  }
+
+  .team-name {
+    font-size: 0.95rem;
+    word-break: break-word;
+    line-height: 1.3;
+  }
+
+  .vs {
+    font-size: 0.7rem;
+    padding: 0 2px;
+    flex-shrink: 0;
+  }
+
+  .scores {
+    gap: 6px;
+  }
+
+  .score-pill {
+    padding: 4px 8px;
+    min-width: 48px;
+  }
+
+  .score-pill .value {
+    font-size: 1.1rem;
+  }
+
+  th, td {
+    padding: 8px 6px;
+    font-size: 0.82rem;
+  }
+
+  .bracket-team {
+    font-size: 0.85rem;
+    word-break: break-word;
+  }
+
+  .score-editor {
+    gap: 8px;
+  }
+
+  .score-input-group label {
+    font-size: 0.7rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+
+  .score-input-group input {
+    font-size: 1rem;
+    padding: 8px;
+  }
+
+  .btn {
+    padding: 10px 14px;
+    font-size: 0.85rem;
+  }
+
+  input, select {
+    min-height: 44px;
+    font-size: 16px; /* prevent iOS zoom on focus */
+  }
+
+  .container {
+    padding: 12px;
+  }
+
+  .card {
+    padding: 12px;
+  }
+}
+
+/* ===== Global Touch Improvements ===== */
+input, select, textarea, button, .nav-btn {
+  touch-action: manipulation;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
