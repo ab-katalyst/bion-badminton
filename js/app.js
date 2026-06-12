@@ -297,11 +297,30 @@
       return;
     }
 
-    const groupMatches = state.matches.filter(m => m.stage === 'group').sort((a, b) => {
-      const order = { live: 0, scheduled: 1, completed: 2 };
-      if (order[a.status] !== order[b.status]) return order[a.status] - order[b.status];
-      return (a.scheduledTime || '').localeCompare(b.scheduledTime || '');
+    // Interleave group matches so teams don't play back-to-back within the same group
+    const allGroup = state.matches.filter(m => m.stage === 'group');
+    const liveGroup = allGroup.filter(m => m.status === 'live').sort((a, b) => (a.scheduledTime || '').localeCompare(b.scheduledTime || ''));
+    const completedGroup = allGroup.filter(m => m.status === 'completed').sort((a, b) => (a.scheduledTime || '').localeCompare(b.scheduledTime || ''));
+
+    // Round-robin interleave scheduled matches by group
+    const byGroup = {};
+    allGroup.filter(m => m.status === 'scheduled').forEach(m => {
+      const g = m.group || '';
+      if (!byGroup[g]) byGroup[g] = [];
+      byGroup[g].push(m);
     });
+    Object.values(byGroup).forEach(arr => arr.sort((a, b) => (a.scheduledTime || '').localeCompare(b.scheduledTime || '')));
+
+    const scheduledGroup = [];
+    const groupKeys = Object.keys(byGroup);
+    let idx = 0;
+    while (groupKeys.some(k => byGroup[k].length > 0)) {
+      const k = groupKeys[idx % groupKeys.length];
+      if (byGroup[k].length > 0) scheduledGroup.push(byGroup[k].shift());
+      idx++;
+    }
+
+    const groupMatches = [...liveGroup, ...scheduledGroup, ...completedGroup];
     const semiMatches = state.matches.filter(m => m.stage === 'semi').sort((a, b) => {
       const order = { live: 0, scheduled: 1, completed: 2 };
       if (order[a.status] !== order[b.status]) return order[a.status] - order[b.status];
