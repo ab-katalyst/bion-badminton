@@ -28,7 +28,7 @@
       "phase": 1,
       "photo": "img/finalists/kids-badminton-singles-male.webp",
       "winners": [
-        { "place": 1, "players": [{ "name": "Afash", "flat": "E-205" }] },
+        { "place": 1, "players": [{ "name": "Afaan", "flat": "E-205" }] },
         { "place": 2, "players": [{ "name": "Vihaan G", "flat": "B-2107" }] }
       ]
     },
@@ -213,7 +213,7 @@
           "place": 2,
           "players": [
             { "name": "Vihaan G", "flat": "B-2107" },
-            { "name": "Afash", "flat": "E-205" }
+            { "name": "Afaan", "flat": "E-205" }
           ]
         }
       ]
@@ -573,11 +573,11 @@
       "winners": []
     },
     {
-      "id": "fun-toddler-race",
+      "id": "fun-race",
       "category": "fun",
-      "sport": "Toddler Race",
-      "format": "Toddlers",
-      "age": "U4",
+      "sport": "Race",
+      "format": "Kids",
+      "age": "U4 · U10",
       "gender": "",
       "phase": 3,
       "winners": []
