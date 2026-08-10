@@ -164,6 +164,14 @@ a { color: inherit; }
   line-height: 1;
 }
 
+/* .tally is a flex row — full basis puts the note on its own line below. */
+.tally-note {
+  flex-basis: 100%;
+  margin-top: -2px;
+  font-size: 0.8rem;
+  color: var(--ink-2);
+}
+
 .tally-count { font-family: var(--mono); font-size: 0.75rem; white-space: nowrap; margin-left: 3px; }
 .tally-count .g { color: var(--gold-ink); }
 .tally-count .s { color: var(--silver-ink); }

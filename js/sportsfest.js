@@ -87,7 +87,7 @@ function towerTally(events) {
   return { rows, unlisted };
 }
 
-function renderTally(el, noteEl, events) {
+function renderTally(el, events) {
   const { rows, unlisted } = towerTally(events);
   el.innerHTML = `
     <p class="eyebrow">Medals by tower</p>
@@ -101,10 +101,11 @@ function renderTally(el, noteEl, events) {
           </div>`
         )
         .join('')}
-    </div>`;
-  if (noteEl && unlisted) {
-    noteEl.textContent = `The tower tally leaves out ${unlisted} finalists who have no flat number on record.`;
-  }
+    </div>
+    <p class="tally-note">Every medallist is counted, including each member of a winning
+      team — teams are often spread across towers.${
+        unlisted ? ` ${unlisted} finalists have no flat number on record and are left out.` : ''
+      }</p>`;
 }
 
 function init(data) {
@@ -117,7 +118,7 @@ function init(data) {
     .map((c) => ({ ...c, events: data.events.filter((e) => e.category === c.id) }))
     .filter((c) => c.events.length);
 
-  renderTally(document.getElementById('tally'), document.getElementById('tally-note'), data.events);
+  renderTally(document.getElementById('tally'), data.events);
 
   tabsEl.innerHTML = cats
     .map(
