@@ -488,6 +488,7 @@
       "format": "Singles",
       "gender": "female",
       "phase": 2,
+      "photo": "img/finalists/adults-carroms-singles-female.webp",
       "winners": [
         { "place": 1, "players": [{ "name": "Manasa Inampudi", "flat": "D-1302" }] },
         { "place": 2, "players": [{ "name": "Deepa", "flat": "B-1209" }] }

@@ -436,6 +436,67 @@ a { color: inherit; }
   padding-bottom: 2px;
 }
 
+/* ===== Volunteers ===== */
+.vol-section { padding-bottom: 34px; }
+.vol-section:last-child { padding-bottom: 72px; }
+
+.vol-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+  margin-top: 12px;
+}
+
+.vol {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+}
+
+/* The two planners carry the whole fest — a lime edge, not a bigger card. */
+.vol--lead { border-left: 3px solid var(--lime); }
+
+.avatar {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--court);
+  color: #fff;
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+}
+
+.vol h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.vol-sports { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 7px; }
+
+.chip {
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 3px 9px;
+}
+
 /* ===== Footer ===== */
 .foot {
   background: var(--court);
