@@ -14,8 +14,9 @@ function genderLabel(gender, category) {
 
 function subtitle(ev) {
   const g = genderLabel(ev.gender, ev.category);
+  const parts = [ev.format, ev.age];
   // "Mixed Doubles · Mixed" reads badly — the format already says it.
-  const parts = ev.format.includes(g) ? [ev.format] : [ev.format, g];
+  if (!ev.format.includes(g)) parts.push(g);
   return parts.filter(Boolean).join(' · ');
 }
 
@@ -24,12 +25,27 @@ const players = (w) =>
     .map((p) => `<div class="player"><span>${esc(p.name)}</span>${p.flat ? `<em class="flat">${esc(p.flat)}</em>` : ''}</div>`)
     .join('');
 
+const ICONS = {
+  Date: '<rect x="3" y="4.5" width="14" height="12.5" rx="2"/><path d="M3 8.5h14M6.5 2.5v4M13.5 2.5v4"/>',
+  Time: '<circle cx="10" cy="10" r="7.5"/><path d="M10 5.5V10l3 2"/>',
+  Venue: '<path d="M10 18s6-5.2 6-9.4A6 6 0 0 0 4 8.6C4 12.8 10 18 10 18Z"/><circle cx="10" cy="8.5" r="2.2"/>',
+};
+
+const icon = (k) =>
+  `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${
+    ICONS[k] || ICONS.Date
+  }</svg>`;
+
+const fixtureHTML = (schedule) =>
+  `<div class="fixture">${Object.entries(schedule)
+    .map(
+      ([k, v]) => `<div>${icon(k)}<div><p class="k">${esc(k)}</p><p class="v">${esc(v)}</p></div></div>`
+    )
+    .join('')}</div>`;
+
 function cardHTML(ev) {
-  // The photo links to itself so the uncropped frame is one tap away.
   const plate = ev.photo
-    ? `<a href="${esc(ev.photo)}" target="_blank" rel="noopener" aria-label="Open the full ${esc(ev.sport)} finalists photo">
-        <img src="${esc(ev.photo)}" alt="Finalists of ${esc(ev.sport)} ${esc(subtitle(ev))}" loading="lazy" decoding="async">
-      </a>`
+    ? `<img src="${esc(ev.photo)}" alt="Finalists of ${esc(ev.sport)} ${esc(subtitle(ev))}" loading="lazy" decoding="async">`
     : '';
   const rows = ev.winners
     .map(
@@ -39,6 +55,7 @@ function cardHTML(ev) {
       </li>`
     )
     .join('');
+  // Not played yet — the plate alone is the card, no empty results list.
   return `<article class="card">
     <div class="plate ${ev.photo ? 'plate--photo' : 'plate--blank'}">${plate}
       <div class="plate-label">
@@ -46,7 +63,7 @@ function cardHTML(ev) {
         ${subtitle(ev) ? `<p>${esc(subtitle(ev))}</p>` : ''}
       </div>
     </div>
-    <ol class="results">${rows}</ol>
+    ${rows ? `<ol class="results">${rows}</ol>` : ''}
   </article>`;
 }
 
@@ -70,25 +87,24 @@ function towerTally(events) {
   return { rows, unlisted };
 }
 
-function renderTally(el, events) {
+function renderTally(el, noteEl, events) {
   const { rows, unlisted } = towerTally(events);
-  const pips = (n, cls) => `<i class="pip${cls}"></i>`.repeat(n);
   el.innerHTML = `
-    <div class="tally-head">
-      <p class="eyebrow">Medals by tower</p>
-      ${unlisted ? `<p class="tally-note">${unlisted} finalists have no flat number on record and are not counted.</p>` : ''}
-    </div>
+    <p class="eyebrow">Medals by tower</p>
     <div class="tally-rows">
       ${rows
         .map(
           (r) => `<div class="tally-row">
             <span class="tower">${r.tower}</span>
-            <span class="tally-count">${r.gold} gold · ${r.silver} silver</span>
-            <div class="pips">${pips(r.gold, '')}${pips(r.silver, ' silver')}</div>
+            <span class="tally-total">${r.gold + r.silver}</span>
+            <span class="tally-count"><span class="g">${r.gold} gold</span> · <span class="s">${r.silver} silver</span></span>
           </div>`
         )
         .join('')}
     </div>`;
+  if (noteEl && unlisted) {
+    noteEl.textContent = `The tower tally leaves out ${unlisted} finalists who have no flat number on record.`;
+  }
 }
 
 function init(data) {
@@ -101,8 +117,9 @@ function init(data) {
     .map((c) => ({ ...c, events: data.events.filter((e) => e.category === c.id) }))
     .filter((c) => c.events.length);
 
-  document.getElementById('event-count').textContent = data.events.length;
-  renderTally(document.getElementById('tally'), data.events);
+  // Fun events have not been played yet, so they are not part of the count.
+  document.getElementById('event-count').textContent = data.events.filter((e) => e.winners.length).length;
+  renderTally(document.getElementById('tally'), document.getElementById('tally-note'), data.events);
 
   tabsEl.innerHTML = cats
     .map(
@@ -115,8 +132,17 @@ function init(data) {
 
   function show(id, push) {
     const cat = cats.find((c) => c.id === id) || cats[0];
-    tabsEl.querySelectorAll('.tab').forEach((b) => b.setAttribute('aria-selected', b.dataset.cat === cat.id));
-    headEl.innerHTML = `<h2>${esc(cat.name)}</h2><p class="eyebrow">${esc(cat.badge)}</p>`;
+    tabsEl.querySelectorAll('.tab').forEach((b) => {
+      const on = b.dataset.cat === cat.id;
+      b.setAttribute('aria-selected', on);
+      // The bar scrolls sideways on phones — keep the active tab in view.
+      if (on) b.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+    });
+    // The tab bar already names the category — don't repeat it here.
+    headEl.innerHTML =
+      `<p class="eyebrow">${esc(cat.badge)} · ${cat.events.length} events</p>` +
+      (cat.schedule ? fixtureHTML(cat.schedule) : '') +
+      (cat.note ? `<p class="panel-note">${esc(cat.note)}</p>` : '');
     gridEl.innerHTML = cat.events.map(cardHTML).join('');
     gridEl.querySelectorAll('.card').forEach((el, i) => (el.style.animationDelay = Math.min(i * 35, 350) + 'ms'));
     if (push) history.replaceState(null, '', '#' + cat.id);

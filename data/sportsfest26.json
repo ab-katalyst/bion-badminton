@@ -6,7 +6,17 @@
     { "id": "kids", "name": "Kids", "badge": "Under 13" },
     { "id": "juniors", "name": "Juniors", "badge": "13 – 18" },
     { "id": "adults", "name": "Adults", "badge": "Open" },
-    { "id": "fun", "name": "Fun Events", "badge": "Community" }
+    {
+      "id": "fun",
+      "name": "Fun Events",
+      "badge": "Community",
+      "schedule": {
+        "Date": "Friday 14 August",
+        "Time": "6:00 PM onwards",
+        "Venue": "Near the basketball court"
+      },
+      "note": "Open to all residents. No registration needed — just turn up."
+    }
   ],
   "events": [
     {
@@ -18,7 +28,7 @@
       "phase": 1,
       "photo": "img/finalists/kids-badminton-singles-male.webp",
       "winners": [
-        { "place": 1, "players": [{ "name": "Afash", "flat": "" }] },
+        { "place": 1, "players": [{ "name": "Afash", "flat": "E-205" }] },
         { "place": 2, "players": [{ "name": "Vihaan G", "flat": "B-2107" }] }
       ]
     },
@@ -49,13 +59,14 @@
       ]
     },
     {
-      "id": "kids-basketball-5v5-mixed",
+      "id": "kids-basketball-5v5-u10",
       "category": "kids",
       "sport": "Basketball",
       "format": "5v5",
+      "age": "U10",
       "gender": "mixed",
       "phase": 1,
-      "photo": "img/finalists/kids-basketball-5v5-mixed.webp",
+      "photo": "img/finalists/kids-basketball-5v5-u10.webp",
       "winners": [
         {
           "place": 1,
@@ -70,12 +81,35 @@
       ]
     },
     {
+      "id": "kids-basketball-5v5-u13",
+      "category": "kids",
+      "sport": "Basketball",
+      "format": "5v5",
+      "age": "U10–13",
+      "gender": "mixed",
+      "phase": 1,
+      "photo": "img/finalists/kids-basketball-5v5-u13.webp",
+      "winners": [
+        {
+          "place": 1,
+          "players": [
+            { "name": "Disha", "flat": "B-1209" },
+            { "name": "Praneel", "flat": "A-1604" },
+            { "name": "Sahasra", "flat": "D-2008" },
+            { "name": "Suhaansh", "flat": "A-1708" },
+            { "name": "Tanish", "flat": "A-807" }
+          ]
+        }
+      ]
+    },
+    {
       "id": "kids-carroms-singles-male",
       "category": "kids",
       "sport": "Carroms",
       "format": "Singles",
       "gender": "male",
       "phase": 2,
+      "photo": "img/finalists/kids-carroms-singles-male.webp",
       "winners": [
         { "place": 1, "players": [{ "name": "Aarush", "flat": "A-206" }] },
         { "place": 2, "players": [{ "name": "Aviluv Thatai", "flat": "B-G004" }] }
@@ -88,6 +122,7 @@
       "format": "",
       "gender": "",
       "phase": 2,
+      "photo": "img/finalists/kids-chess.webp",
       "winners": [
         { "place": 1, "players": [{ "name": "Sanjita", "flat": "B-1110" }] },
         { "place": 2, "players": [{ "name": "Jai Kumar", "flat": "A-407" }] }
@@ -100,6 +135,7 @@
       "format": "Singles",
       "gender": "male",
       "phase": 2,
+      "photo": "img/finalists/kids-table-tennis-singles-male.webp",
       "winners": [
         { "place": 1, "players": [{ "name": "Aarush", "flat": "A-206" }] },
         { "place": 2, "players": [{ "name": "Arjun", "flat": "E-106" }] }
@@ -136,6 +172,7 @@
       "format": "",
       "gender": "male",
       "phase": 2,
+      "photo": "img/finalists/kids-swimming-male.webp",
       "winners": [
         { "place": 1, "players": [{ "name": "Vihaan G", "flat": "B-2107" }] },
         { "place": 2, "players": [{ "name": "Aryan Gaur", "flat": "E-106" }] }
@@ -175,7 +212,7 @@
           "place": 2,
           "players": [
             { "name": "Vihaan G", "flat": "B-2107" },
-            { "name": "Afash", "flat": "" }
+            { "name": "Afash", "flat": "E-205" }
           ]
         }
       ]
@@ -199,33 +236,13 @@
       ]
     },
     {
-      "id": "juniors-basketball-5v5-mixed",
-      "category": "juniors",
-      "sport": "Basketball",
-      "format": "5v5",
-      "gender": "mixed",
-      "phase": 1,
-      "photo": "img/finalists/juniors-basketball-5v5-mixed.webp",
-      "winners": [
-        {
-          "place": 1,
-          "players": [
-            { "name": "Disha", "flat": "" },
-            { "name": "Praneel", "flat": "" },
-            { "name": "Sahasra", "flat": "" },
-            { "name": "Suhaansh", "flat": "" },
-            { "name": "Tanish", "flat": "" }
-          ]
-        }
-      ]
-    },
-    {
       "id": "juniors-carroms-singles-male",
       "category": "juniors",
       "sport": "Carroms",
       "format": "Singles",
       "gender": "male",
       "phase": 2,
+      "photo": "img/finalists/juniors-carroms-singles-male.webp",
       "winners": [
         { "place": 1, "players": [{ "name": "Sumukh", "flat": "A-1904" }] },
         { "place": 2, "players": [{ "name": "Samyak", "flat": "A-1904" }] }
@@ -238,6 +255,7 @@
       "format": "",
       "gender": "male",
       "phase": 2,
+      "photo": "img/finalists/juniors-chess-male.webp",
       "winners": [
         { "place": 1, "players": [{ "name": "Chandu", "flat": "D-2104" }] },
         { "place": 2, "players": [{ "name": "Samiksh", "flat": "D-1604" }] }
@@ -250,6 +268,7 @@
       "format": "Singles",
       "gender": "male",
       "phase": 2,
+      "photo": "img/finalists/juniors-table-tennis-singles-male.webp",
       "winners": [
         { "place": 1, "players": [{ "name": "Sudhit", "flat": "B-1408" }] },
         { "place": 2, "players": [{ "name": "Kruthik", "flat": "B-1605" }] }
@@ -262,6 +281,7 @@
       "format": "Doubles",
       "gender": "male",
       "phase": 2,
+      "photo": "img/finalists/juniors-table-tennis-doubles-male.webp",
       "winners": [
         {
           "place": 1,
@@ -286,6 +306,7 @@
       "format": "",
       "gender": "male",
       "phase": 2,
+      "photo": "img/finalists/juniors-swimming-male.webp",
       "winners": [
         { "place": 1, "players": [{ "name": "Sampreeth", "flat": "D-1604" }] },
         { "place": 2, "players": [{ "name": "Samiksh", "flat": "D-1604" }] }
@@ -299,6 +320,7 @@
       "format": "Singles",
       "gender": "male",
       "phase": 2,
+      "photo": "img/finalists/adults-badminton-singles-male.webp",
       "winners": [
         { "place": 1, "players": [{ "name": "Vijay G", "flat": "B-2107" }] },
         { "place": 2, "players": [{ "name": "Shubham", "flat": "B-1602" }] }
@@ -324,6 +346,7 @@
       "format": "Doubles",
       "gender": "male",
       "phase": 2,
+      "photo": "img/finalists/adults-badminton-doubles-male.webp",
       "winners": [
         {
           "place": 1,
@@ -348,6 +371,7 @@
       "format": "Mixed Doubles",
       "gender": "mixed",
       "phase": 2,
+      "photo": "img/finalists/adults-badminton-mixed-doubles.webp",
       "winners": [
         {
           "place": 1,
@@ -488,6 +512,7 @@
       "format": "",
       "gender": "female",
       "phase": 2,
+      "photo": "img/finalists/adults-chess-female.webp",
       "winners": [
         { "place": 1, "players": [{ "name": "Deepthi", "flat": "A-606" }] },
         { "place": 2, "players": [{ "name": "Archana", "flat": "B-804" }] }
@@ -500,10 +525,61 @@
       "format": "",
       "gender": "mixed",
       "phase": 2,
+      "photo": "img/finalists/adults-swimming-mixed.webp",
       "winners": [
         { "place": 1, "players": [{ "name": "Gandharva", "flat": "D-2202" }] },
         { "place": 2, "players": [{ "name": "Bhavya", "flat": "A-602" }] }
       ]
+    },
+
+    {
+      "id": "fun-tug-of-war",
+      "category": "fun",
+      "sport": "Tug of War",
+      "format": "Adults",
+      "age": "Men & Women",
+      "gender": "",
+      "phase": 3,
+      "winners": []
+    },
+    {
+      "id": "fun-musical-chairs-senior-women",
+      "category": "fun",
+      "sport": "Musical Chairs",
+      "format": "Senior Women",
+      "gender": "",
+      "phase": 3,
+      "winners": []
+    },
+    {
+      "id": "fun-musical-chairs-kids",
+      "category": "fun",
+      "sport": "Musical Chairs",
+      "format": "Kids",
+      "age": "U4 · U10 · U13",
+      "gender": "",
+      "phase": 3,
+      "winners": []
+    },
+    {
+      "id": "fun-lemon-and-spoon-kids",
+      "category": "fun",
+      "sport": "Lemon & Spoon",
+      "format": "Kids",
+      "age": "U4 · U10 · U13",
+      "gender": "",
+      "phase": 3,
+      "winners": []
+    },
+    {
+      "id": "fun-toddler-race",
+      "category": "fun",
+      "sport": "Toddler Race",
+      "format": "Toddlers",
+      "age": "U4",
+      "gender": "",
+      "phase": 3,
+      "winners": []
     }
   ]
 }

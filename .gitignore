@@ -6,3 +6,7 @@ test-results/
 sportsfest/
 
 *.backup_*
+
+# macOS junk that rides along with photo transfers
+.DS_Store
+._*
