@@ -28,7 +28,7 @@
       "phase": 1,
       "photo": "img/finalists/kids-badminton-singles-male.webp",
       "winners": [
-        { "place": 1, "players": [{ "name": "Afaan", "flat": "E-205" }] },
+        { "place": 1, "players": [{ "name": "Affan", "flat": "E-205" }] },
         { "place": 2, "players": [{ "name": "Vihaan G", "flat": "B-2107" }] }
       ]
     },
@@ -213,7 +213,7 @@
           "place": 2,
           "players": [
             { "name": "Vihaan G", "flat": "B-2107" },
-            { "name": "Afaan", "flat": "E-205" }
+            { "name": "Affan", "flat": "E-205" }
           ]
         }
       ]
