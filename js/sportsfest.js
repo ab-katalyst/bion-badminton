@@ -117,8 +117,6 @@ function init(data) {
     .map((c) => ({ ...c, events: data.events.filter((e) => e.category === c.id) }))
     .filter((c) => c.events.length);
 
-  // Fun events have not been played yet, so they are not part of the count.
-  document.getElementById('event-count').textContent = data.events.filter((e) => e.winners.length).length;
   renderTally(document.getElementById('tally'), document.getElementById('tally-note'), data.events);
 
   tabsEl.innerHTML = cats
