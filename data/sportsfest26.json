@@ -1,0 +1,509 @@
+{
+  "title": "SportsFest '26",
+  "org": "Bollineni Bion",
+  "note": "Medals are presented on 15 August at the Independence Day event.",
+  "categories": [
+    { "id": "kids", "name": "Kids", "badge": "Under 13" },
+    { "id": "juniors", "name": "Juniors", "badge": "13 – 18" },
+    { "id": "adults", "name": "Adults", "badge": "Open" },
+    { "id": "fun", "name": "Fun Events", "badge": "Community" }
+  ],
+  "events": [
+    {
+      "id": "kids-badminton-singles-male",
+      "category": "kids",
+      "sport": "Badminton",
+      "format": "Singles",
+      "gender": "male",
+      "phase": 1,
+      "photo": "img/finalists/kids-badminton-singles-male.webp",
+      "winners": [
+        { "place": 1, "players": [{ "name": "Afash", "flat": "" }] },
+        { "place": 2, "players": [{ "name": "Vihaan G", "flat": "B-2107" }] }
+      ]
+    },
+    {
+      "id": "kids-badminton-singles-female",
+      "category": "kids",
+      "sport": "Badminton",
+      "format": "Singles",
+      "gender": "female",
+      "phase": 1,
+      "photo": "img/finalists/kids-badminton-singles-female.webp",
+      "winners": [
+        { "place": 1, "players": [{ "name": "Sanjita", "flat": "B-1110" }] },
+        { "place": 2, "players": [{ "name": "Aditi Chauhan", "flat": "E-601" }] }
+      ]
+    },
+    {
+      "id": "kids-pickleball-singles-male",
+      "category": "kids",
+      "sport": "Pickleball",
+      "format": "Singles",
+      "gender": "male",
+      "phase": 1,
+      "photo": "img/finalists/kids-pickleball-singles-male.webp",
+      "winners": [
+        { "place": 1, "players": [{ "name": "Aviluv Thatai", "flat": "B-G004" }] },
+        { "place": 2, "players": [{ "name": "Vihaan G", "flat": "B-2107" }] }
+      ]
+    },
+    {
+      "id": "kids-basketball-5v5-mixed",
+      "category": "kids",
+      "sport": "Basketball",
+      "format": "5v5",
+      "gender": "mixed",
+      "phase": 1,
+      "photo": "img/finalists/kids-basketball-5v5-mixed.webp",
+      "winners": [
+        {
+          "place": 1,
+          "players": [
+            { "name": "Arjun", "flat": "E-905" },
+            { "name": "Garvit", "flat": "E-706" },
+            { "name": "Risha", "flat": "B-804" },
+            { "name": "Riyansh", "flat": "A-803" },
+            { "name": "Vedansh", "flat": "A-606" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "kids-carroms-singles-male",
+      "category": "kids",
+      "sport": "Carroms",
+      "format": "Singles",
+      "gender": "male",
+      "phase": 2,
+      "winners": [
+        { "place": 1, "players": [{ "name": "Aarush", "flat": "A-206" }] },
+        { "place": 2, "players": [{ "name": "Aviluv Thatai", "flat": "B-G004" }] }
+      ]
+    },
+    {
+      "id": "kids-chess",
+      "category": "kids",
+      "sport": "Chess",
+      "format": "",
+      "gender": "",
+      "phase": 2,
+      "winners": [
+        { "place": 1, "players": [{ "name": "Sanjita", "flat": "B-1110" }] },
+        { "place": 2, "players": [{ "name": "Jai Kumar", "flat": "A-407" }] }
+      ]
+    },
+    {
+      "id": "kids-table-tennis-singles-male",
+      "category": "kids",
+      "sport": "Table Tennis",
+      "format": "Singles",
+      "gender": "male",
+      "phase": 2,
+      "winners": [
+        { "place": 1, "players": [{ "name": "Aarush", "flat": "A-206" }] },
+        { "place": 2, "players": [{ "name": "Arjun", "flat": "E-106" }] }
+      ]
+    },
+    {
+      "id": "kids-table-tennis-doubles-male",
+      "category": "kids",
+      "sport": "Table Tennis",
+      "format": "Doubles",
+      "gender": "male",
+      "phase": 2,
+      "winners": [
+        {
+          "place": 1,
+          "players": [
+            { "name": "Praneel", "flat": "A-1604" },
+            { "name": "Arjun", "flat": "E-106" }
+          ]
+        },
+        {
+          "place": 2,
+          "players": [
+            { "name": "Giridhar", "flat": "A-205" },
+            { "name": "Jai Kumar", "flat": "A-407" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "kids-swimming-male",
+      "category": "kids",
+      "sport": "Swimming",
+      "format": "",
+      "gender": "male",
+      "phase": 2,
+      "winners": [
+        { "place": 1, "players": [{ "name": "Vihaan G", "flat": "B-2107" }] },
+        { "place": 2, "players": [{ "name": "Aryan Gaur", "flat": "E-106" }] }
+      ]
+    },
+
+    {
+      "id": "juniors-badminton-singles-male",
+      "category": "juniors",
+      "sport": "Badminton",
+      "format": "Singles",
+      "gender": "male",
+      "phase": 1,
+      "photo": "img/finalists/juniors-badminton-singles-male.webp",
+      "winners": [
+        { "place": 1, "players": [{ "name": "Adheesh", "flat": "E-204" }] },
+        { "place": 2, "players": [{ "name": "Atharv Verma", "flat": "E-106" }] }
+      ]
+    },
+    {
+      "id": "juniors-badminton-doubles-male",
+      "category": "juniors",
+      "sport": "Badminton",
+      "format": "Doubles",
+      "gender": "male",
+      "phase": 1,
+      "photo": "img/finalists/juniors-badminton-doubles-male.webp",
+      "winners": [
+        {
+          "place": 1,
+          "players": [
+            { "name": "Sanjith", "flat": "A-2105" },
+            { "name": "Adheesh", "flat": "E-204" }
+          ]
+        },
+        {
+          "place": 2,
+          "players": [
+            { "name": "Vihaan G", "flat": "B-2107" },
+            { "name": "Afash", "flat": "" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "juniors-basketball-2v2-male",
+      "category": "juniors",
+      "sport": "Basketball",
+      "format": "2v2",
+      "gender": "male",
+      "phase": 1,
+      "photo": "img/finalists/juniors-basketball-2v2-male.webp",
+      "winners": [
+        {
+          "place": 1,
+          "players": [
+            { "name": "Sohith", "flat": "B-2307" },
+            { "name": "Maanas", "flat": "A-606" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "juniors-basketball-5v5-mixed",
+      "category": "juniors",
+      "sport": "Basketball",
+      "format": "5v5",
+      "gender": "mixed",
+      "phase": 1,
+      "photo": "img/finalists/juniors-basketball-5v5-mixed.webp",
+      "winners": [
+        {
+          "place": 1,
+          "players": [
+            { "name": "Disha", "flat": "" },
+            { "name": "Praneel", "flat": "" },
+            { "name": "Sahasra", "flat": "" },
+            { "name": "Suhaansh", "flat": "" },
+            { "name": "Tanish", "flat": "" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "juniors-carroms-singles-male",
+      "category": "juniors",
+      "sport": "Carroms",
+      "format": "Singles",
+      "gender": "male",
+      "phase": 2,
+      "winners": [
+        { "place": 1, "players": [{ "name": "Sumukh", "flat": "A-1904" }] },
+        { "place": 2, "players": [{ "name": "Samyak", "flat": "A-1904" }] }
+      ]
+    },
+    {
+      "id": "juniors-chess-male",
+      "category": "juniors",
+      "sport": "Chess",
+      "format": "",
+      "gender": "male",
+      "phase": 2,
+      "winners": [
+        { "place": 1, "players": [{ "name": "Chandu", "flat": "D-2104" }] },
+        { "place": 2, "players": [{ "name": "Samiksh", "flat": "D-1604" }] }
+      ]
+    },
+    {
+      "id": "juniors-table-tennis-singles-male",
+      "category": "juniors",
+      "sport": "Table Tennis",
+      "format": "Singles",
+      "gender": "male",
+      "phase": 2,
+      "winners": [
+        { "place": 1, "players": [{ "name": "Sudhit", "flat": "B-1408" }] },
+        { "place": 2, "players": [{ "name": "Kruthik", "flat": "B-1605" }] }
+      ]
+    },
+    {
+      "id": "juniors-table-tennis-doubles-male",
+      "category": "juniors",
+      "sport": "Table Tennis",
+      "format": "Doubles",
+      "gender": "male",
+      "phase": 2,
+      "winners": [
+        {
+          "place": 1,
+          "players": [
+            { "name": "Sudhit", "flat": "B-1408" },
+            { "name": "Sohith", "flat": "B-2307" }
+          ]
+        },
+        {
+          "place": 2,
+          "players": [
+            { "name": "Sumukh", "flat": "A-1904" },
+            { "name": "Sampreeth", "flat": "D-1604" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "juniors-swimming-male",
+      "category": "juniors",
+      "sport": "Swimming",
+      "format": "",
+      "gender": "male",
+      "phase": 2,
+      "winners": [
+        { "place": 1, "players": [{ "name": "Sampreeth", "flat": "D-1604" }] },
+        { "place": 2, "players": [{ "name": "Samiksh", "flat": "D-1604" }] }
+      ]
+    },
+
+    {
+      "id": "adults-badminton-singles-male",
+      "category": "adults",
+      "sport": "Badminton",
+      "format": "Singles",
+      "gender": "male",
+      "phase": 2,
+      "winners": [
+        { "place": 1, "players": [{ "name": "Vijay G", "flat": "B-2107" }] },
+        { "place": 2, "players": [{ "name": "Shubham", "flat": "B-1602" }] }
+      ]
+    },
+    {
+      "id": "adults-badminton-singles-female",
+      "category": "adults",
+      "sport": "Badminton",
+      "format": "Singles",
+      "gender": "female",
+      "phase": 1,
+      "photo": "img/finalists/adults-badminton-singles-female.webp",
+      "winners": [
+        { "place": 1, "players": [{ "name": "Pratyusha", "flat": "A-808" }] },
+        { "place": 2, "players": [{ "name": "Vishwa Mukhtyar", "flat": "B-2412" }] }
+      ]
+    },
+    {
+      "id": "adults-badminton-doubles-male",
+      "category": "adults",
+      "sport": "Badminton",
+      "format": "Doubles",
+      "gender": "male",
+      "phase": 2,
+      "winners": [
+        {
+          "place": 1,
+          "players": [
+            { "name": "Vijay G", "flat": "B-2107" },
+            { "name": "Jagadish", "flat": "B-2010" }
+          ]
+        },
+        {
+          "place": 2,
+          "players": [
+            { "name": "Prakash Bhatt", "flat": "D-704" },
+            { "name": "Shubham", "flat": "B-1602" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "adults-badminton-mixed-doubles",
+      "category": "adults",
+      "sport": "Badminton",
+      "format": "Mixed Doubles",
+      "gender": "mixed",
+      "phase": 2,
+      "winners": [
+        {
+          "place": 1,
+          "players": [
+            { "name": "Rabiya", "flat": "E-205" },
+            { "name": "Jani", "flat": "E-205" }
+          ]
+        },
+        {
+          "place": 2,
+          "players": [
+            { "name": "Nayva", "flat": "B-2303" },
+            { "name": "Chalapathi", "flat": "B-2303" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "adults-table-tennis-singles-male",
+      "category": "adults",
+      "sport": "Table Tennis",
+      "format": "Singles",
+      "gender": "male",
+      "phase": 1,
+      "photo": "img/finalists/adults-table-tennis-singles-male.webp",
+      "winners": [
+        { "place": 1, "players": [{ "name": "Rishi Santhalia", "flat": "B-109" }] },
+        { "place": 2, "players": [{ "name": "Prakash Bhatt", "flat": "D-704" }] }
+      ]
+    },
+    {
+      "id": "adults-table-tennis-singles-female",
+      "category": "adults",
+      "sport": "Table Tennis",
+      "format": "Singles",
+      "gender": "female",
+      "phase": 1,
+      "photo": "img/finalists/adults-table-tennis-singles-female.webp",
+      "winners": [
+        { "place": 1, "players": [{ "name": "Sowmya Tammana", "flat": "E-1003" }] },
+        { "place": 2, "players": [{ "name": "Anjana Khare", "flat": "E-106" }] }
+      ]
+    },
+    {
+      "id": "adults-pickleball-singles-male",
+      "category": "adults",
+      "sport": "Pickleball",
+      "format": "Singles",
+      "gender": "male",
+      "phase": 1,
+      "photo": "img/finalists/adults-pickleball-singles-male.webp",
+      "winners": [
+        { "place": 1, "players": [{ "name": "Vijay G", "flat": "B-2107" }] },
+        { "place": 2, "players": [{ "name": "Bhargav Ram", "flat": "B-503" }] }
+      ]
+    },
+    {
+      "id": "adults-pickleball-singles-female",
+      "category": "adults",
+      "sport": "Pickleball",
+      "format": "Singles",
+      "gender": "female",
+      "phase": 1,
+      "photo": "img/finalists/adults-pickleball-singles-female.webp",
+      "winners": [
+        { "place": 1, "players": [{ "name": "Manasa Inampudi", "flat": "D-1302" }] },
+        { "place": 2, "players": [{ "name": "Angana Borah", "flat": "D-2304" }] }
+      ]
+    },
+    {
+      "id": "adults-lawn-tennis-singles-male",
+      "category": "adults",
+      "sport": "Lawn Tennis",
+      "format": "Singles",
+      "gender": "male",
+      "phase": 1,
+      "photo": "img/finalists/adults-lawn-tennis-singles-male.webp",
+      "winners": [
+        { "place": 1, "players": [{ "name": "Raj Palepu", "flat": "D-103" }] },
+        { "place": 2, "players": [{ "name": "Vijay G", "flat": "B-2107" }] }
+      ]
+    },
+    {
+      "id": "adults-squash-male",
+      "category": "adults",
+      "sport": "Squash",
+      "format": "",
+      "gender": "male",
+      "phase": 1,
+      "photo": "img/finalists/adults-squash-male.webp",
+      "winners": [
+        { "place": 1, "players": [{ "name": "Sanjay Jain", "flat": "D-2202" }] },
+        { "place": 2, "players": [{ "name": "Vijay G", "flat": "B-2107" }] }
+      ]
+    },
+    {
+      "id": "adults-carroms-singles-male",
+      "category": "adults",
+      "sport": "Carroms",
+      "format": "Singles",
+      "gender": "male",
+      "phase": 1,
+      "photo": "img/finalists/adults-carroms-singles-male.webp",
+      "winners": [
+        { "place": 1, "players": [{ "name": "Nithish", "flat": "B-1908" }] },
+        { "place": 2, "players": [{ "name": "Nagendra Babu", "flat": "B-G10" }] }
+      ]
+    },
+    {
+      "id": "adults-carroms-singles-female",
+      "category": "adults",
+      "sport": "Carroms",
+      "format": "Singles",
+      "gender": "female",
+      "phase": 2,
+      "winners": [
+        { "place": 1, "players": [{ "name": "Manasa Inampudi", "flat": "D-1302" }] },
+        { "place": 2, "players": [{ "name": "Deepa", "flat": "B-1209" }] }
+      ]
+    },
+    {
+      "id": "adults-chess-male",
+      "category": "adults",
+      "sport": "Chess",
+      "format": "",
+      "gender": "male",
+      "phase": 1,
+      "photo": "img/finalists/adults-chess-male.webp",
+      "winners": [
+        { "place": 1, "players": [{ "name": "Rishi Santhalia", "flat": "B-109" }] },
+        { "place": 2, "players": [{ "name": "Suresh", "flat": "B-2402" }] }
+      ]
+    },
+    {
+      "id": "adults-chess-female",
+      "category": "adults",
+      "sport": "Chess",
+      "format": "",
+      "gender": "female",
+      "phase": 2,
+      "winners": [
+        { "place": 1, "players": [{ "name": "Deepthi", "flat": "A-606" }] },
+        { "place": 2, "players": [{ "name": "Archana", "flat": "B-804" }] }
+      ]
+    },
+    {
+      "id": "adults-swimming-mixed",
+      "category": "adults",
+      "sport": "Swimming",
+      "format": "",
+      "gender": "mixed",
+      "phase": 2,
+      "winners": [
+        { "place": 1, "players": [{ "name": "Gandharva", "flat": "D-2202" }] },
+        { "place": 2, "players": [{ "name": "Bhavya", "flat": "A-602" }] }
+      ]
+    }
+  ]
+}

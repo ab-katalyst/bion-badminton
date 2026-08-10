@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bion Badminton Tournament</title>
+  <link rel="icon" href="../../bion-favicon.png">
+  <link rel="stylesheet" href="../../css/styles.css">
+</head>
+<body>
+  <header class="header">
+    <h1><img src="../../bion-logo.png" alt="Bion" class="header-logo"> Badminton Tournament</h1>
+    <div class="subtitle">Live Scores · Standings · Matches</div>
+    <div class="last-updated" id="last-updated">Loading...</div>
+    <nav class="nav">
+      <button class="nav-btn active" data-view="live">🔴 Live</button>
+      <button class="nav-btn" data-view="standings">📊 Standings</button>
+      <button class="nav-btn" data-view="matches">📅 Matches</button>
+    </nav>
+    <div class="subtitle" style="margin-top:10px"><a href="../../index.html" style="color:inherit">← All Bion events</a></div>
+  </header>
+
+  <main class="container">
+    <!-- LIVE VIEW -->
+    <div id="view-live" class="section active">
+      <div class="section-title">Current Matches</div>
+      <div id="live-matches">
+        <div class="empty">
+          <div class="empty-icon">🏸</div>
+          <p>Loading tournament data...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- STANDINGS VIEW -->
+    <div id="view-standings" class="section">
+      <div id="standings-content">
+        <div class="empty"><div class="empty-icon">📊</div><p>Loading...</p></div>
+      </div>
+    </div>
+
+    <!-- MATCHES VIEW -->
+    <div id="view-matches" class="section">
+      <div id="matches-content">
+        <div class="empty"><div class="empty-icon">📅</div><p>Loading...</p></div>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="../../js/config.js"></script>
+  <script src="../../js/shared.js"></script>
+  <script src="../../js/app.js"></script>
+</body>
+</html>

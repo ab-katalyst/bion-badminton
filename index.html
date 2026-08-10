@@ -3,52 +3,58 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bion Badminton Tournament</title>
+  <title>BION SportsFest '26 — Results</title>
+  <meta name="description" content="Champions and runners-up from every event at Bollineni Bion SportsFest '26.">
   <link rel="icon" href="bion-favicon.png">
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..800&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="css/sportsfest.css">
 </head>
 <body>
-  <header class="header">
-    <h1><img src="bion-logo.png" alt="Bion" class="header-logo"> Badminton Tournament</h1>
-    <div class="subtitle">Live Scores · Standings · Matches</div>
-    <div class="last-updated" id="last-updated">Loading...</div>
-    <nav class="nav">
-      <button class="nav-btn active" data-view="live">🔴 Live</button>
-      <button class="nav-btn" data-view="standings">📊 Standings</button>
-      <button class="nav-btn" data-view="matches">📅 Matches</button>
-    </nav>
+
+  <header class="masthead">
+    <div class="wrap">
+      <a href="index.html" aria-label="Bollineni Bion, home"><img src="bion-logo.png" alt="Bollineni Bion"></a>
+      <nav>
+        <a href="index.html" aria-current="page">Home</a>
+        <a href="past-events.html">Past Events</a>
+      </nav>
+    </div>
   </header>
 
-  <main class="container">
-    <!-- LIVE VIEW -->
-    <div id="view-live" class="section active">
-      <div class="section-title">Current Matches</div>
-      <div id="live-matches">
-        <div class="empty">
-          <div class="empty-icon">🏸</div>
-          <p>Loading tournament data...</p>
-        </div>
-      </div>
-    </div>
+  <main>
+    <section class="hero wrap">
+      <p class="eyebrow">Bollineni Bion · August 2026</p>
+      <h1>SportsFest <i>'26</i></h1>
+      <p class="lede">
+        <b id="event-count">33</b> events across two weekends, from under-13 badminton to the
+        adults' swimming lane. Here is everyone who made a final.
+      </p>
+      <div class="tally" id="tally"></div>
+    </section>
 
-    <!-- STANDINGS VIEW -->
-    <div id="view-standings" class="section">
-      <div id="standings-content">
-        <div class="empty"><div class="empty-icon">📊</div><p>Loading...</p></div>
-      </div>
-    </div>
+    <nav class="tabs" aria-label="Age categories">
+      <div class="wrap" id="tabs" role="tablist"></div>
+    </nav>
 
-    <!-- MATCHES VIEW -->
-    <div id="view-matches" class="section">
-      <div id="matches-content">
-        <div class="empty"><div class="empty-icon">📅</div><p>Loading...</p></div>
-      </div>
+    <div class="wrap">
+      <div class="panel-head" id="panel-head"></div>
+      <div class="grid" id="grid" role="tabpanel"></div>
     </div>
-
   </main>
 
-  <script src="js/config.js"></script>
-  <script src="js/shared.js"></script>
-  <script src="js/app.js"></script>
+  <footer class="foot">
+    <div class="wrap">
+      <p class="legend">
+        <span><i class="pip"></i> Champion</span>
+        <span><i class="pip silver"></i> Runner-up</span>
+      </p>
+      <p><strong>Medals are presented on 15 August</strong>, at the Independence Day event.</p>
+      <p>Events that did not reach minimum registrations were not held. <a href="past-events.html">Past events</a></p>
+    </div>
+  </footer>
+
+  <script src="js/sportsfest.js"></script>
 </body>
 </html>

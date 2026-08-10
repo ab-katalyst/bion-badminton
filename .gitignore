@@ -1,1 +1,8 @@
 test-results/
+
+# Raw source material for SportsFest '26 — 22MB of 3x posters, PDFs and
+# uncompressed photos. The deployed site uses img/finalists/*.webp instead.
+# Keep a copy elsewhere; drop this line if you want it version controlled.
+sportsfest/
+
+*.backup_*

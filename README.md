@@ -1,6 +1,60 @@
-# 🏸 Bion Badminton Tournament Scoreboard
+# 🏆 Bion SportsFest
 
-A simple, mobile-first badminton tournament app that runs entirely on **Cloudflare Pages** with **Google Sheets** as the backend.
+Static site for Bollineni Bion sporting events, hosted on **Cloudflare Pages**. No build step.
+
+## Site map
+
+| URL | What it is |
+|-----|------------|
+| `/` | SportsFest '26 results — tabs per age category, finalist photo per event |
+| `/past-events.html` | Archive index |
+| `/past/badminton-0626/` | Friendly Badminton 06/26 scoreboard (archived, still live) |
+| `/past/badminton-0626/admin.html` | Its admin panel |
+
+## SportsFest '26
+
+All results live in **`data/sportsfest26.json`** — no database, no backend. Each event:
+
+```json
+{
+  "id": "kids-badminton-singles-male",
+  "category": "kids", "sport": "Badminton", "format": "Singles",
+  "gender": "male", "phase": 1,
+  "photo": "img/finalists/kids-badminton-singles-male.webp",
+  "winners": [
+    { "place": 1, "players": [{ "name": "Afash", "flat": "" }] },
+    { "place": 2, "players": [{ "name": "Vihaan G", "flat": "B-2107" }] }
+  ]
+}
+```
+
+- `place` is a list, so champion-only events (the basketball teams) just omit place 2.
+- `players` is a list, so singles, doubles and 5-a-side teams all use one shape.
+- Drop `photo` entirely and the card renders as a court-green band instead. Add the key when the photo arrives.
+- A category with no events gets no tab — that is why Fun Events is currently hidden.
+- The "medals by tower" tally on the home page is derived from the leading letter of each `flat`.
+
+### Adding results
+
+1. Add the event object to `data/sportsfest26.json`.
+2. If there is a photo, save it as `img/finalists/<id>.webp` and set the `photo` key.
+
+Compress new photos the same way the existing ones were:
+
+```bash
+convert "raw.jpeg" -auto-orient -resize '1400x1400>' -strip \
+        -quality 76 -define webp:method=6 "img/finalists/<id>.webp"
+```
+
+Admin mode (editing winners and flat numbers in the browser) is not built yet. It will reuse
+the Apps Script backend below, writing to a second cell.
+
+---
+
+# 🏸 Archived: Badminton Tournament (June 2026)
+
+A mobile-first badminton tournament app backed by **Google Sheets**. Lives at
+`/past/badminton-0626/` and still reads from the deployed Apps Script.
 
 ## Features
 
@@ -52,8 +106,8 @@ A simple, mobile-first badminton tournament app that runs entirely on **Cloudfla
 
 ### Step 4: Use It
 
-- **Public link:** `https://your-project.pages.dev/` — share this with everyone
-- **Admin link:** `https://your-project.pages.dev/admin.html` — use this to run the tournament
+- **Public link:** `https://your-project.pages.dev/past/badminton-0626/` — share this with everyone
+- **Admin link:** `https://your-project.pages.dev/past/badminton-0626/admin.html` — use this to run the tournament
 
 ## How to Run the Tournament
 
@@ -89,15 +143,22 @@ Standings are sorted by: **Points → Game Difference → Games Won**
 
 ## Files
 
-```
-├── index.html          # Public scoreboard
-├── admin.html          # Admin panel
-├── css/styles.css      # All styling
-├── js/config.js        # Your settings (edit before deploy)
-├── js/app.js           # Public app logic
-├── js/admin.js         # Admin logic
-├── code.gs             # Google Apps Script backend
-└── README.md           # This file
+```text
+├── index.html                     # SportsFest '26 results
+├── past-events.html               # Archive index
+├── data/sportsfest26.json         # All SportsFest results
+├── css/sportsfest.css             # SportsFest styling
+├── js/sportsfest.js               # SportsFest rendering
+├── img/finalists/*.webp           # Finalist photos, named after event id
+├── past/badminton-0626/
+│   ├── index.html                 # Archived scoreboard
+│   └── admin.html                 # Archived admin panel
+├── css/styles.css                 # Badminton styling
+├── js/config.js                   # Apps Script URL + admin password
+├── js/app.js                      # Badminton public logic
+├── js/admin.js                    # Badminton admin logic
+├── code.gs                        # Google Apps Script backend
+└── README.md
 ```
 
 ## Notes
