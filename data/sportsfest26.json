@@ -560,8 +560,8 @@
       "id": "fun-tennikoit",
       "category": "fun",
       "sport": "Tennikoit",
-      "format": "Open",
-      "gender": "",
+      "format": "",
+      "gender": "female",
       "time": "7:00 – 8:00 PM",
       "phase": 3,
       "winners": []
