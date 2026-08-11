@@ -186,7 +186,7 @@ a { color: inherit; }
   z-index: 40;
   background: var(--paper);
   border-bottom: 1px solid var(--line);
-  margin-top: 24px;
+  margin-top: 8px;
 }
 
 .tabs .wrap {
