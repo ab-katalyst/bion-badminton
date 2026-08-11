@@ -607,7 +607,7 @@
     { "name": "Anjana Khare", "flat": "E-106", "sports": ["Swimming", "Carroms"], "photo": "img/volunteers/anjana.webp" },
     { "name": "Saagarika", "flat": "A-807", "sports": ["Carroms", "Chess"] },
     { "name": "Jashwanth", "sports": ["Table Tennis"] },
-    { "name": "Rajanarender Suram", "flat": "B-2205", "sports": ["Lawn Tennis"] },
+    { "name": "Rajanarender Suram", "flat": "B-2205", "sports": ["Lawn Tennis"], "photo": "img/volunteers/rajanarender.webp" },
     { "name": "Nithish", "flat": "B-1908", "sports": ["Badminton"] },
     { "name": "Kartik Gambhir", "flat": "B-1105", "sports": ["Swimming"] },
     { "name": "Veeru", "sports": ["Swimming"] },
