@@ -539,8 +539,13 @@ img.avatar { object-fit: cover; }
   .masthead .wrap { gap: 12px; }
   .masthead nav { gap: 16px; font-size: 0.85rem; }
   .hero { padding-top: 28px; padding-bottom: 20px; }
-  /* SPORTSFEST cannot break, so drop the width axis rather than overflow. */
-  .hero h1 { font-size: clamp(2.4rem, 13vw, 4rem); font-variation-settings: 'wdth' 100, 'wght' 800; }
+  /* One line, always: drop the width axis and size off the viewport so
+     SPORTSFEST '26 fits down to a 320px screen. */
+  .hero h1 {
+    font-size: clamp(1.9rem, 10.5vw, 4rem);
+    font-variation-settings: 'wdth' 100, 'wght' 800;
+    white-space: nowrap;
+  }
   /* Four towers wrap raggedly in a flex row. Grid to 2x2, dropping to one
      column below ~380px where two cells no longer fit. */
   .tally-rows {
