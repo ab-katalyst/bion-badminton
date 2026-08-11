@@ -535,31 +535,13 @@
     },
 
     {
-      "id": "fun-tug-of-war",
+      "id": "fun-race",
       "category": "fun",
-      "sport": "Tug of War",
-      "format": "Adults",
-      "age": "Men & Women",
-      "gender": "",
-      "phase": 3,
-      "winners": []
-    },
-    {
-      "id": "fun-musical-chairs-senior-women",
-      "category": "fun",
-      "sport": "Musical Chairs",
-      "format": "Senior Women",
-      "gender": "",
-      "phase": 3,
-      "winners": []
-    },
-    {
-      "id": "fun-musical-chairs-kids",
-      "category": "fun",
-      "sport": "Musical Chairs",
+      "sport": "Race",
       "format": "Kids",
-      "age": "U4 · U10 · U13",
+      "age": "U4 · U10",
       "gender": "",
+      "time": "6:00 – 7:00 PM",
       "phase": 3,
       "winners": []
     },
@@ -570,18 +552,67 @@
       "format": "Kids",
       "age": "U4 · U10 · U13",
       "gender": "",
+      "time": "6:00 – 7:00 PM",
       "phase": 3,
       "winners": []
     },
     {
-      "id": "fun-race",
+      "id": "fun-tennikoit",
       "category": "fun",
-      "sport": "Race",
-      "format": "Kids",
-      "age": "U4 · U10",
+      "sport": "Tennikoit",
+      "format": "Open",
       "gender": "",
+      "time": "7:00 – 8:00 PM",
+      "phase": 3,
+      "winners": []
+    },
+    {
+      "id": "fun-musical-chairs-kids",
+      "category": "fun",
+      "sport": "Musical Chairs",
+      "format": "Kids",
+      "age": "U4 · U10 · U13",
+      "gender": "",
+      "time": "7:00 – 8:00 PM",
+      "phase": 3,
+      "winners": []
+    },
+    {
+      "id": "fun-musical-chairs-senior-women",
+      "category": "fun",
+      "sport": "Musical Chairs",
+      "format": "Senior Women",
+      "gender": "",
+      "time": "7:00 – 8:00 PM",
+      "phase": 3,
+      "winners": []
+    },
+    {
+      "id": "fun-tug-of-war",
+      "category": "fun",
+      "sport": "Tug of War",
+      "format": "Adults",
+      "age": "Men & Women",
+      "gender": "",
+      "time": "7:00 – 8:00 PM",
       "phase": 3,
       "winners": []
     }
+  ],
+
+  "volunteers": [
+    { "name": "Anji Reddy", "flat": "E-1501", "lead": true, "sports": ["Overall Sports & Planning"], "photo": "img/volunteers/anji.webp" },
+    { "name": "Vijay G", "flat": "B-2107", "lead": true, "sports": ["Overall Sports & Planning"], "photo": "img/volunteers/vijay.webp" },
+    { "name": "Ramyadeepthi", "flat": "A-606", "sports": ["Caroms", "Chess"], "photo": "img/volunteers/ramyadeepthi.webp" },
+    { "name": "Anjana Khare", "flat": "E-106", "sports": ["Swimming", "Caroms"], "photo": "img/volunteers/anjana.webp" },
+    { "name": "Jashwanth", "sports": ["Table Tennis"] },
+    { "name": "Rajanarender Suram", "flat": "B-2205", "sports": ["Lawn Tennis"] },
+    { "name": "Nithish", "flat": "B-1908", "sports": ["Badminton"] },
+    { "name": "Kartik Gambhir", "flat": "B-1105", "sports": ["Swimming"] },
+    { "name": "Veeru", "sports": ["Swimming"] },
+    { "name": "Shankar T", "flat": "D-502", "sports": ["Table Tennis", "Caroms"] },
+    { "name": "Satish", "flat": "A-606", "sports": ["Caroms"], "photo": "img/volunteers/satish.webp" },
+    { "name": "Vishal Gaur", "flat": "E-106", "sports": ["Table Tennis"] },
+    { "name": "Shubham", "flat": "B-1602", "sports": ["Badminton"] }
   ]
 }

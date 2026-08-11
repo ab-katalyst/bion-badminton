@@ -61,11 +61,27 @@ function cardHTML(ev) {
       <div class="plate-label">
         <h3>${esc(ev.sport)}</h3>
         ${subtitle(ev) ? `<p>${esc(subtitle(ev))}</p>` : ''}
+        ${ev.time ? `<p class="when">${esc(ev.time)}</p>` : ''}
       </div>
     </div>
     ${rows ? `<ol class="results">${rows}</ol>` : ''}
   </article>`;
 }
+
+const initials = (name) =>
+  name.split(/\s+/).slice(0, 2).map((w) => w[0]).join('').toUpperCase();
+
+const volHTML = (v) => `<article class="vol${v.lead ? ' vol--lead' : ''}">
+    ${
+      v.photo
+        ? `<img class="avatar" src="${esc(v.photo)}" alt="" loading="lazy" decoding="async">`
+        : `<span class="avatar" aria-hidden="true">${esc(initials(v.name))}</span>`
+    }
+    <div>
+      <h3>${esc(v.name)}${v.flat ? ` <em class="flat">${esc(v.flat)}</em>` : ''}</h3>
+      <p class="vol-sports">${v.sports.map((s) => `<span class="chip">${esc(s)}</span>`).join('')}</p>
+    </div>
+  </article>`;
 
 // Medal count per tower, read off the flat number's leading letter.
 function towerTally(events) {
@@ -113,14 +129,23 @@ function init(data) {
   const headEl = document.getElementById('panel-head');
   const gridEl = document.getElementById('grid');
 
-  // A category with no events yet — Fun Events today — gets no tab.
+  // A category with no events yet gets no tab.
   const cats = data.categories
     .map((c) => ({ ...c, events: data.events.filter((e) => e.category === c.id) }))
     .filter((c) => c.events.length);
 
+  // Volunteers is a tab, not an events category — it rides along at the end.
+  const tabs = cats.concat({
+    id: 'volunteers',
+    name: 'Volunteers',
+    badge: 'Ran the fest',
+    note: 'The residents who planned, scheduled and ran every event.',
+    events: data.volunteers || [],
+  });
+
   renderTally(document.getElementById('tally'), data.events);
 
-  tabsEl.innerHTML = cats
+  tabsEl.innerHTML = tabs
     .map(
       (c, i) =>
         `<button class="tab" role="tab" id="tab-${c.id}" aria-controls="panel" aria-selected="${i === 0}" data-cat="${c.id}">${esc(
@@ -130,7 +155,8 @@ function init(data) {
     .join('');
 
   function show(id, push) {
-    const cat = cats.find((c) => c.id === id) || cats[0];
+    const cat = tabs.find((c) => c.id === id) || tabs[0];
+    const isVol = cat.id === 'volunteers';
     tabsEl.querySelectorAll('.tab').forEach((b) => {
       const on = b.dataset.cat === cat.id;
       b.setAttribute('aria-selected', on);
@@ -139,10 +165,11 @@ function init(data) {
     });
     // The tab bar already names the category — don't repeat it here.
     headEl.innerHTML =
-      `<p class="eyebrow">${esc(cat.badge)} · ${cat.events.length} events</p>` +
+      `<p class="eyebrow">${esc(cat.badge)} · ${cat.events.length} ${isVol ? 'volunteers' : 'events'}</p>` +
       (cat.schedule ? fixtureHTML(cat.schedule) : '') +
       (cat.note ? `<p class="panel-note">${esc(cat.note)}</p>` : '');
-    gridEl.innerHTML = cat.events.map(cardHTML).join('');
+    gridEl.className = isVol ? 'vol-grid' : 'grid';
+    gridEl.innerHTML = cat.events.map(isVol ? volHTML : cardHTML).join('');
     gridEl.querySelectorAll('.card').forEach((el, i) => (el.style.animationDelay = Math.min(i * 35, 350) + 'ms'));
     if (push) history.replaceState(null, '', '#' + cat.id);
   }

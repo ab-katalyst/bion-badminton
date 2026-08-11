@@ -349,6 +349,9 @@ a { color: inherit; }
   margin-top: 4px;
 }
 
+/* Fun events run in slots, so each card carries its own hour. */
+.plate-label .when { color: var(--lime); opacity: 1; }
+
 .results { list-style: none; padding: 6px 16px 14px; }
 
 .result {
@@ -445,6 +448,7 @@ a { color: inherit; }
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 14px;
   margin-top: 12px;
+  padding-bottom: 72px;
 }
 
 .vol {
@@ -473,6 +477,8 @@ a { color: inherit; }
   font-size: 0.8rem;
   letter-spacing: 0.04em;
 }
+
+img.avatar { object-fit: cover; }
 
 .vol h3 {
   font-size: 1rem;
