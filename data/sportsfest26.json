@@ -529,7 +529,7 @@
       "phase": 2,
       "photo": "img/finalists/adults-swimming-mixed.webp",
       "winners": [
-        { "place": 1, "players": [{ "name": "Gandharva", "flat": "D-2202" }] },
+        { "place": 1, "players": [{ "name": "Gandharv", "flat": "D-2202" }] },
         { "place": 2, "players": [{ "name": "Bhavya", "flat": "A-602" }] }
       ]
     },
