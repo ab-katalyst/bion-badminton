@@ -535,26 +535,102 @@
     },
 
     {
-      "id": "fun-race",
+      "id": "fun-race-u4",
       "category": "fun",
       "sport": "Race",
       "format": "Kids",
-      "age": "U4 · U10",
+      "age": "Under 4",
       "gender": "",
       "time": "6:00 – 7:00 PM",
       "phase": 3,
-      "winners": []
+      "winners": [
+        { "place": 1, "players": [{ "name": "Viraj", "flat": "A-1007" }] },
+        { "place": 2, "players": [{ "name": "Shanmukh", "flat": "B-2107" }] }
+      ]
     },
     {
-      "id": "fun-lemon-and-spoon-kids",
+      "id": "fun-race-u8",
+      "category": "fun",
+      "sport": "Race",
+      "format": "Kids",
+      "age": "5 – 8",
+      "gender": "",
+      "time": "6:00 – 7:00 PM",
+      "phase": 3,
+      "winners": [
+        { "place": 1, "players": [{ "name": "Risha", "flat": "B-804" }] },
+        { "place": 2, "players": [{ "name": "Krithansh", "flat": "A-006" }] }
+      ]
+    },
+    {
+      "id": "fun-race-u10",
+      "category": "fun",
+      "sport": "Race",
+      "format": "Kids",
+      "age": "8 – 10",
+      "gender": "",
+      "time": "6:00 – 7:00 PM",
+      "phase": 3,
+      "winners": [
+        { "place": 1, "players": [{ "name": "Medhansh", "flat": "A-406" }] },
+        { "place": 2, "players": [{ "name": "Suhansh", "flat": "A-1708" }] }
+      ]
+    },
+    {
+      "id": "fun-race-u13",
+      "category": "fun",
+      "sport": "Race",
+      "format": "Kids",
+      "age": "Under 13",
+      "gender": "",
+      "time": "6:00 – 7:00 PM",
+      "phase": 3,
+      "winners": [
+        { "place": 1, "players": [{ "name": "Lohith", "flat": "A-707" }] },
+        { "place": 2, "players": [{ "name": "Disha", "flat": "B-1209" }] }
+      ]
+    },
+    {
+      "id": "fun-lemon-and-spoon-u4",
       "category": "fun",
       "sport": "Lemon & Spoon",
       "format": "Kids",
-      "age": "U4 · U10 · U13",
+      "age": "2 – 4",
       "gender": "",
       "time": "6:00 – 7:00 PM",
       "phase": 3,
-      "winners": []
+      "winners": [
+        { "place": 1, "players": [{ "name": "Harini", "flat": "B-1612" }] },
+        { "place": 2, "players": [{ "name": "Vishwak", "flat": "B-2103" }] }
+      ]
+    },
+    {
+      "id": "fun-lemon-and-spoon-u9",
+      "category": "fun",
+      "sport": "Lemon & Spoon",
+      "format": "Kids",
+      "age": "5 – 9",
+      "gender": "",
+      "time": "6:00 – 7:00 PM",
+      "phase": 3,
+      "winners": [
+        { "place": 1, "players": [{ "name": "Reyansh", "flat": "A-204" }] },
+        { "place": 2, "players": [{ "name": "Risha", "flat": "B-804" }] }
+      ]
+    },
+    {
+      "id": "fun-lemon-and-spoon-u13",
+      "category": "fun",
+      "sport": "Lemon & Spoon",
+      "format": "Kids",
+      "age": "10 – 13",
+      "gender": "",
+      "time": "6:00 – 7:00 PM",
+      "phase": 3,
+      "winners": [
+        { "place": 1, "players": [{ "name": "Disha", "flat": "B-1209" }] },
+        { "place": 2, "players": [{ "name": "Praveen", "flat": "B-1912" }] }
+      ]
     },
     {
       "id": "fun-tennikoit",
@@ -564,18 +640,54 @@
       "gender": "female",
       "time": "7:00 – 8:00 PM",
       "phase": 3,
-      "winners": []
+      "winners": [
+        {
+          "place": 1,
+          "players": [
+            { "name": "Ramadevi D", "flat": "A-206" },
+            { "name": "Sirisha", "flat": "A-1007" },
+            { "name": "Pooja" },
+            { "name": "Vishnavi", "flat": "B-1909" }
+          ]
+        },
+        {
+          "place": 2,
+          "players": [
+            { "name": "Hema", "flat": "A-707" },
+            { "name": "Deepika", "flat": "B-607" },
+            { "name": "Keerthi", "flat": "A-1708" },
+            { "name": "Sai Laxmi", "flat": "D block" }
+          ]
+        }
+      ]
     },
     {
-      "id": "fun-musical-chairs-kids",
+      "id": "fun-musical-chairs-u7",
       "category": "fun",
       "sport": "Musical Chairs",
       "format": "Kids",
-      "age": "U4 · U10 · U13",
+      "age": "2 – 7",
       "gender": "",
       "time": "7:00 – 8:00 PM",
       "phase": 3,
-      "winners": []
+      "winners": [
+        { "place": 1, "players": [{ "name": "Vedh", "flat": "B-903" }] },
+        { "place": 2, "players": [{ "name": "Avikush", "flat": "B-004" }] }
+      ]
+    },
+    {
+      "id": "fun-musical-chairs-8plus",
+      "category": "fun",
+      "sport": "Musical Chairs",
+      "format": "Kids",
+      "age": "8+",
+      "gender": "",
+      "time": "7:00 – 8:00 PM",
+      "phase": 3,
+      "winners": [
+        { "place": 1, "players": [{ "name": "Virat", "flat": "A-2404" }] },
+        { "place": 2, "players": [{ "name": "Yashwin", "flat": "A-2002" }] }
+      ]
     },
     {
       "id": "fun-musical-chairs-senior-women",
@@ -585,7 +697,10 @@
       "gender": "",
       "time": "7:00 – 8:00 PM",
       "phase": 3,
-      "winners": []
+      "winners": [
+        { "place": 1, "players": [{ "name": "Vardhini", "flat": "A-2104" }] },
+        { "place": 2, "players": [{ "name": "Beena", "flat": "D-1004" }] }
+      ]
     },
     {
       "id": "fun-tug-of-war",
@@ -594,7 +709,7 @@
       "format": "Adults",
       "age": "Men & Women",
       "gender": "",
-      "time": "7:00 – 8:00 PM",
+      "time": "Yet to be played",
       "phase": 3,
       "winners": []
     }
@@ -614,6 +729,8 @@
     { "name": "Shankar T", "flat": "D-502", "sports": ["Table Tennis", "Carroms"] },
     { "name": "Satish", "flat": "A-606", "sports": ["Carroms"], "photo": "img/volunteers/satish.webp" },
     { "name": "Vishal Gaur", "flat": "E-106", "sports": ["Table Tennis"] },
-    { "name": "Shubham", "flat": "B-1602", "sports": ["Badminton"], "photo": "img/volunteers/shubham.webp" }
+    { "name": "Shubham", "flat": "B-1602", "sports": ["Badminton"], "photo": "img/volunteers/shubham.webp" },
+    { "name": "Manasa Inampudi", "flat": "D-1302", "sports": ["Fun Events"] },
+    { "name": "Lakshma Reddy Maligireddy", "flat": "D-1104", "sports": ["Fun Events"] }
   ]
 }
