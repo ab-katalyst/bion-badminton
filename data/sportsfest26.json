@@ -703,6 +703,66 @@
       ]
     },
     {
+      "id": "adults-fitness-senior-men",
+      "category": "adults",
+      "sport": "Fitness Competition",
+      "format": "Senior Men",
+      "gender": "male",
+      "phase": 3,
+      "winners": [
+        { "place": 1, "players": [{ "name": "Nagendra", "flat": "B-G10" }] },
+        { "place": 2, "players": [{ "name": "Sai Sunil Kumar", "flat": "B-801" }] }
+      ]
+    },
+    {
+      "id": "adults-fitness-beginner-men",
+      "category": "adults",
+      "sport": "Fitness Competition",
+      "format": "Beginner Men",
+      "gender": "male",
+      "phase": 3,
+      "winners": [
+        { "place": 1, "players": [{ "name": "Yashwanth", "flat": "D-304" }] },
+        { "place": 2, "players": [{ "name": "Venkat Boyina", "flat": "A-1007" }] }
+      ]
+    },
+    {
+      "id": "adults-fitness-beginner-women",
+      "category": "adults",
+      "sport": "Fitness Competition",
+      "format": "Beginner Women",
+      "gender": "female",
+      "phase": 3,
+      "winners": [
+        { "place": 1, "players": [{ "name": "Poojitha", "flat": "D-2306" }] },
+        { "place": 2, "players": [{ "name": "Sahana", "flat": "D-2201" }] }
+      ]
+    },
+    {
+      "id": "adults-fitness-senior-women",
+      "category": "adults",
+      "sport": "Fitness Competition",
+      "format": "Senior Women",
+      "gender": "female",
+      "phase": 3,
+      "winners": [
+        { "place": 1, "players": [{ "name": "Srilatha", "flat": "B-208" }] },
+        { "place": 2, "players": [{ "name": "Sheela", "flat": "B-203" }] }
+      ]
+    },
+    {
+      "id": "adults-fitness-general",
+      "category": "adults",
+      "sport": "Fitness Competition",
+      "format": "General Fitness Category",
+      "gender": "",
+      "phase": 3,
+      "winners": [
+        { "place": 1, "players": [{ "name": "Swathi", "flat": "E-1501" }] },
+        { "place": 2, "players": [{ "name": "Sudha Prasanna", "flat": "D-1703" }] }
+      ]
+    },
+    {
       "id": "fun-tug-of-war",
       "category": "fun",
       "sport": "Tug of War",
