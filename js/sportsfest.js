@@ -124,11 +124,6 @@ function renderTally(el, events) {
       }</p>`;
 }
 
-const volunteerGroupHTML = () => `
-  <figure class="volunteer-group">
-    <img src="img/volunteers/sportsfest26-volunteers.webp" alt="BION SportsFest '26 volunteers together">
-  </figure>`;
-
 function init(data) {
   const tabsEl = document.getElementById('tabs');
   const headEl = document.getElementById('panel-head');
@@ -174,9 +169,7 @@ function init(data) {
       (cat.schedule ? fixtureHTML(cat.schedule) : '') +
       (cat.note ? `<p class="panel-note">${esc(cat.note)}</p>` : '');
     gridEl.className = isVol ? 'vol-grid' : 'grid';
-    gridEl.innerHTML = isVol
-      ? volunteerGroupHTML() + cat.events.map(volHTML).join('')
-      : cat.events.map(cardHTML).join('');
+    gridEl.innerHTML = cat.events.map(isVol ? volHTML : cardHTML).join('');
     gridEl.querySelectorAll('.card').forEach((el, i) => (el.style.animationDelay = Math.min(i * 35, 350) + 'ms'));
     if (push) history.replaceState(null, '', '#' + cat.id);
   }
