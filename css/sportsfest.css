@@ -440,9 +440,7 @@ a { color: inherit; }
 }
 
 /* ===== Financials ===== */
-.hero--financial h1 { font-size: clamp(2.5rem, 8vw, 5.8rem); }
-
-.finance-page { padding-bottom: 76px; }
+.finance-panel { padding: 4px 0 76px; }
 
 .finance-section { margin-top: 58px; }
 
@@ -454,8 +452,7 @@ a { color: inherit; }
   margin-bottom: 18px;
 }
 
-.section-heading h2,
-.adjustment h2 {
+.section-heading h2 {
   font-family: var(--display);
   font-variation-settings: 'wdth' 115, 'wght' 750;
   font-size: clamp(1.55rem, 3vw, 2.15rem);
@@ -590,36 +587,16 @@ a { color: inherit; }
   font-weight: 500;
 }
 
-.adjustment {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 24px;
-  align-items: center;
-  margin-top: 28px;
-  padding: 24px;
-  background: var(--court);
-  color: #fff;
-  border-radius: var(--radius);
+.shuttle-note {
+  margin-top: 12px;
+  padding: 13px 16px;
+  border-left: 3px solid var(--lime);
+  background: var(--card);
+  color: var(--ink-2);
+  font-size: 0.86rem;
 }
 
-.adjustment .eyebrow { color: var(--lime); }
-.adjustment h2 { margin-bottom: 12px; }
-.adjustment p:last-child { max-width: 78ch; color: #dfe8e0; }
-.adjustment strong { color: #fff; }
-
-.adjustment-mark {
-  width: 82px;
-  height: 82px;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  background: var(--lime);
-  color: var(--ink);
-  font-family: var(--display);
-  font-variation-settings: 'wdth' 110, 'wght' 800;
-  font-size: 1.75rem;
-  letter-spacing: -0.04em;
-}
+.shuttle-note strong { color: var(--ink); }
 
 .bill-grid {
   display: grid;
@@ -791,7 +768,6 @@ img.avatar { object-fit: cover; }
     font-variation-settings: 'wdth' 100, 'wght' 800;
     white-space: nowrap;
   }
-  .hero--financial h1 { font-size: clamp(1.9rem, 8vw, 3rem); }
   /* Four towers wrap raggedly in a flex row. Grid to 2x2, dropping to one
      column below ~380px where two cells no longer fit. */
   .tally-rows {
@@ -811,7 +787,7 @@ img.avatar { object-fit: cover; }
 }
 
 @media (max-width: 700px) {
-  .finance-page { padding-bottom: 54px; }
+  .finance-panel { padding-bottom: 54px; }
   .finance-section { margin-top: 44px; }
 
   .finance-table-wrap { overflow: visible; border: 0; background: transparent; }
@@ -862,6 +838,4 @@ img.avatar { object-fit: cover; }
   .finance-table .subtotal-row td:nth-child(3) { grid-column: 1 / -1; }
   .adjusted-row { box-shadow: inset 3px 0 var(--lime); }
 
-  .adjustment { grid-template-columns: 1fr; gap: 18px; padding: 20px; }
-  .adjustment-mark { width: 68px; height: 68px; font-size: 1.5rem; }
 }

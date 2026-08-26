@@ -6,8 +6,7 @@ Static site for Bollineni Bion sporting events, hosted on **Cloudflare Pages**. 
 
 | URL | What it is |
 |-----|------------|
-| `/` | SportsFest '26 results — tabs per age category, finalist photo per event |
-| `/financials.html` | SportsFest '26 event expenses, sponsorship split and bill previews |
+| `/` | SportsFest '26 results — tabs per age category, volunteers and financials |
 | `/past-events.html` | Archive index |
 | `/past/badminton-0626/` | Friendly Badminton 06/26 scoreboard (archived, still live) |
 | `/past/badminton-0626/admin.html` | Its admin panel |

@@ -134,14 +134,24 @@ function init(data) {
     .map((c) => ({ ...c, events: data.events.filter((e) => e.category === c.id) }))
     .filter((c) => c.events.length);
 
-  // Volunteers is a tab, not an events category — it rides along at the end.
-  const tabs = cats.concat({
-    id: 'volunteers',
-    name: 'Volunteers',
-    badge: 'Ran the fest',
-    note: 'The residents who planned, scheduled and ran every event.',
-    events: data.volunteers || [],
-  });
+  // Volunteers and Financials are top-level tabs, not event categories.
+  const tabs = cats.concat(
+    {
+      id: 'volunteers',
+      name: 'Volunteers',
+      badge: 'Ran the fest',
+      note: 'The residents who planned, scheduled and ran every event.',
+      events: data.volunteers || [],
+    },
+    {
+      id: 'financials',
+      name: 'Financials',
+      badge: 'Expense statement',
+      note: 'Event costs, sponsor contributions and supporting bill references.',
+      tabBadge: '₹8.8k',
+      events: [],
+    }
+  );
 
   renderTally(document.getElementById('tally'), data.events);
 
@@ -150,13 +160,14 @@ function init(data) {
       (c, i) =>
         `<button class="tab" role="tab" id="tab-${c.id}" aria-controls="panel" aria-selected="${i === 0}" data-cat="${c.id}">${esc(
           c.name
-        )} <b>${c.events.length}</b></button>`
+        )} <b>${esc(c.tabBadge ?? c.events.length)}</b></button>`
     )
     .join('');
 
   function show(id, push) {
     const cat = tabs.find((c) => c.id === id) || tabs[0];
     const isVol = cat.id === 'volunteers';
+    const isFinancial = cat.id === 'financials';
     tabsEl.querySelectorAll('.tab').forEach((b) => {
       const on = b.dataset.cat === cat.id;
       b.setAttribute('aria-selected', on);
@@ -165,11 +176,13 @@ function init(data) {
     });
     // The tab bar already names the category — don't repeat it here.
     headEl.innerHTML =
-      `<p class="eyebrow">${esc(cat.badge)} · ${cat.events.length} ${isVol ? 'volunteers' : 'events'}</p>` +
+      `<p class="eyebrow">${esc(cat.badge)}${isFinancial ? '' : ` · ${cat.events.length} ${isVol ? 'volunteers' : 'events'}`}</p>` +
       (cat.schedule ? fixtureHTML(cat.schedule) : '') +
       (cat.note ? `<p class="panel-note">${esc(cat.note)}</p>` : '');
-    gridEl.className = isVol ? 'vol-grid' : 'grid';
-    gridEl.innerHTML = cat.events.map(isVol ? volHTML : cardHTML).join('');
+    gridEl.className = isFinancial ? 'finance-panel' : isVol ? 'vol-grid' : 'grid';
+    gridEl.innerHTML = isFinancial
+      ? document.getElementById('financials-panel').innerHTML
+      : cat.events.map(isVol ? volHTML : cardHTML).join('');
     gridEl.querySelectorAll('.card').forEach((el, i) => (el.style.animationDelay = Math.min(i * 35, 350) + 'ms'));
     if (push) history.replaceState(null, '', '#' + cat.id);
   }
