@@ -641,17 +641,6 @@ a { color: inherit; }
 
 .bill-card figcaption > p:last-child { color: var(--ink-2); font-size: 0.86rem; }
 
-.unbilled-note {
-  margin-top: 18px;
-  padding: 15px 18px;
-  border-left: 3px solid var(--lime);
-  background: var(--card);
-  color: var(--ink-2);
-  font-size: 0.9rem;
-}
-
-.unbilled-note strong { color: var(--ink); }
-
 /* ===== Volunteers ===== */
 .vol-section { padding-bottom: 34px; }
 .vol-section:last-child { padding-bottom: 72px; }
