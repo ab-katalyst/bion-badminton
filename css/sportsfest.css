@@ -439,6 +439,242 @@ a { color: inherit; }
   padding-bottom: 2px;
 }
 
+/* ===== Financials ===== */
+.hero--financial h1 { font-size: clamp(2.5rem, 8vw, 5.8rem); }
+
+.finance-page { padding-bottom: 76px; }
+
+.finance-section { margin-top: 58px; }
+
+.section-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 18px;
+}
+
+.section-heading h2,
+.adjustment h2 {
+  font-family: var(--display);
+  font-variation-settings: 'wdth' 115, 'wght' 750;
+  font-size: clamp(1.55rem, 3vw, 2.15rem);
+  line-height: 1;
+  letter-spacing: -0.025em;
+  text-transform: uppercase;
+  margin-top: 7px;
+}
+
+.section-heading > p {
+  max-width: 48ch;
+  color: var(--ink-2);
+  font-size: 0.9rem;
+}
+
+.finance-totals {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.total-card {
+  min-height: 172px;
+  display: flex;
+  flex-direction: column;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+
+.total-card--grand {
+  background: var(--court);
+  border-color: var(--court);
+  color: #fff;
+}
+
+.total-card p {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.total-card--grand p,
+.total-card--grand span { color: #dfe8e0; }
+
+.total-card strong {
+  display: block;
+  margin: 15px 0 12px;
+  font-family: var(--display);
+  font-variation-settings: 'wdth' 110, 'wght' 800;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 0.95;
+  letter-spacing: -0.035em;
+}
+
+.total-card--grand strong { color: var(--lime); }
+
+.total-card span {
+  margin-top: auto;
+  color: var(--ink-2);
+  font-size: 0.82rem;
+  line-height: 1.35;
+}
+
+.finance-table-wrap {
+  overflow-x: auto;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.finance-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.finance-table th {
+  background: #e9ede5;
+  color: var(--ink-2);
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.finance-table th,
+.finance-table td { padding: 14px 16px; vertical-align: top; }
+
+.finance-table tbody tr + tr td { border-top: 1px solid var(--line); }
+.finance-table td:first-child { font-weight: 600; }
+.finance-table .money { font-family: var(--mono); font-weight: 500; white-space: nowrap; }
+
+.adjusted-row { box-shadow: inset 3px 0 var(--lime); }
+
+.adjusted-tag {
+  display: inline-block;
+  margin-left: 6px;
+  border-radius: 999px;
+  padding: 2px 7px;
+  background: var(--lime);
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  vertical-align: 1px;
+}
+
+.sponsor {
+  display: inline-block;
+  border-radius: 999px;
+  padding: 3px 9px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  font-size: 0.76rem;
+  white-space: nowrap;
+}
+
+.sponsor--team { background: #e8f4ce; border-color: #cfe59e; }
+
+.finance-table .subtotal-row td {
+  background: #f7f8f5;
+  color: var(--ink-2);
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.adjustment {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 24px;
+  align-items: center;
+  margin-top: 28px;
+  padding: 24px;
+  background: var(--court);
+  color: #fff;
+  border-radius: var(--radius);
+}
+
+.adjustment .eyebrow { color: var(--lime); }
+.adjustment h2 { margin-bottom: 12px; }
+.adjustment p:last-child { max-width: 78ch; color: #dfe8e0; }
+.adjustment strong { color: #fff; }
+
+.adjustment-mark {
+  width: 82px;
+  height: 82px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--lime);
+  color: var(--ink);
+  font-family: var(--display);
+  font-variation-settings: 'wdth' 110, 'wght' 800;
+  font-size: 1.75rem;
+  letter-spacing: -0.04em;
+}
+
+.bill-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.bill-card {
+  overflow: hidden;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.bill-card > a {
+  display: block;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #e6e8e2;
+}
+
+.bill-card img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.25s ease;
+}
+
+.bill-card a:hover img { transform: scale(1.025); }
+
+.bill-card figcaption { padding: 18px; }
+
+.bill-card h3 {
+  margin: 8px 0 6px;
+  font-family: var(--display);
+  font-variation-settings: 'wdth' 112, 'wght' 700;
+  font-size: 1.25rem;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.bill-card figcaption > p:last-child { color: var(--ink-2); font-size: 0.86rem; }
+
+.unbilled-note {
+  margin-top: 18px;
+  padding: 15px 18px;
+  border-left: 3px solid var(--lime);
+  background: var(--card);
+  color: var(--ink-2);
+  font-size: 0.9rem;
+}
+
+.unbilled-note strong { color: var(--ink); }
+
 /* ===== Volunteers ===== */
 .vol-section { padding-bottom: 34px; }
 .vol-section:last-child { padding-bottom: 72px; }
@@ -536,8 +772,17 @@ img.avatar { object-fit: cover; }
 }
 
 @media (max-width: 560px) {
-  .masthead .wrap { gap: 12px; }
-  .masthead nav { gap: 16px; font-size: 0.85rem; }
+  .masthead .wrap { gap: 8px; }
+  .masthead img { height: 24px; }
+  .masthead nav {
+    min-width: 0;
+    gap: 12px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    white-space: nowrap;
+    font-size: 0.76rem;
+  }
+  .masthead nav::-webkit-scrollbar { display: none; }
   .hero { padding-top: 28px; padding-bottom: 20px; }
   /* One line, always: drop the width axis and size off the viewport so
      SPORTSFEST '26 fits down to a 320px screen. */
@@ -546,6 +791,7 @@ img.avatar { object-fit: cover; }
     font-variation-settings: 'wdth' 100, 'wght' 800;
     white-space: nowrap;
   }
+  .hero--financial h1 { font-size: clamp(1.9rem, 8vw, 3rem); }
   /* Four towers wrap raggedly in a flex row. Grid to 2x2, dropping to one
      column below ~380px where two cells no longer fit. */
   .tally-rows {
@@ -555,4 +801,67 @@ img.avatar { object-fit: cover; }
     width: 100%;
   }
   .tally-row { padding: 0; border-left: 0; }
+}
+
+@media (max-width: 820px) {
+  .finance-totals { grid-template-columns: 1fr; }
+  .total-card { min-height: 150px; }
+  .bill-grid { grid-template-columns: 1fr; }
+  .section-heading { align-items: start; flex-direction: column; gap: 8px; }
+}
+
+@media (max-width: 700px) {
+  .finance-page { padding-bottom: 54px; }
+  .finance-section { margin-top: 44px; }
+
+  .finance-table-wrap { overflow: visible; border: 0; background: transparent; }
+  .finance-table,
+  .finance-table tbody { display: block; }
+  .finance-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+  .finance-table tr {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 10px 18px;
+    margin-bottom: 12px;
+    padding: 16px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+  }
+  .finance-table th,
+  .finance-table td { padding: 0; }
+  .finance-table tbody tr + tr td { border-top: 0; }
+  .finance-table td { display: grid; gap: 3px; }
+  .finance-table td::before {
+    content: attr(data-label);
+    color: var(--ink-2);
+    font-family: var(--mono);
+    font-size: 0.58rem;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .finance-table td:first-child,
+  .finance-table td:nth-child(2),
+  .finance-table td:nth-child(4),
+  .finance-table td:nth-child(5) { grid-column: 1 / -1; }
+  .finance-table .money { grid-column: 2; grid-row: 1; align-self: start; }
+  .finance-table .subtotal-row td { background: transparent; }
+  .finance-table .subtotal-row td:first-child { grid-column: 1; }
+  .finance-table .subtotal-row td:nth-child(2) { grid-column: 2; grid-row: 1; }
+  .finance-table .subtotal-row td:nth-child(3) { grid-column: 1 / -1; }
+  .adjusted-row { box-shadow: inset 3px 0 var(--lime); }
+
+  .adjustment { grid-template-columns: 1fr; gap: 18px; padding: 20px; }
+  .adjustment-mark { width: 68px; height: 68px; font-size: 1.5rem; }
 }
